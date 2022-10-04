@@ -1,29 +1,67 @@
 import styles from "../styles/Featured.module.css";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Featured() {
+  const [index, setIndex] = useState(0);
   const images = [
     "/img/featured.png",
     "/img/featured2.png",
     "/img/featured3.png",
+    "/img/featured4.png",
+    "/img/featured5.png",
   ];
+
+  const handleArrow = (direction) => {
+    if (direction === "l") {
+      setIndex(index !== 0 ? index - 1 : 4);
+    }
+    if (direction === "r") {
+      setIndex(index !== 4 ? index + 1 : 0);
+    }
+  };
 
   return (
     <div className={styles.container}>
-      <Image src="/img/arrowl.png" alt="left arrow" layout="fill" />
-      <div className={styles.wrapper}>
-        <div className={styles.imgContainer}>
-          {images.map((img, i) => (
-            <Image
-              src="/img/featured.png"
-              key={i}
-              alt="Featured Deal of the Month!"
-              layout="fill"
-            />
-          ))}
-        </div>
+      <div
+        className={styles.arrowContainer}
+        style={{ left: 0 }}
+        onClick={() => handleArrow("l")}
+      >
+        <Image
+          src="/img/arrowl.png"
+          alt="left arrow"
+          layout="fill"
+          objectFit="contain"
+        />
       </div>
-      <Image src="/img/arrowr.png" alt="right arrow" layout="fill" />
+      <div
+        className={styles.wrapper}
+        style={{ transform: `translateX(${-100 * index}vw)` }}
+      >
+        {images.map((img, i) => (
+          <div className={styles.imgContainer} key={i}>
+            <Image
+              src={img}
+              alt="Featured Deals of the Week!"
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+        ))}
+      </div>
+      <div
+        className={styles.arrowContainer}
+        style={{ right: 0 }}
+        onClick={() => handleArrow("r")}
+      >
+        <Image
+          src="/img/arrowr.png"
+          alt="right arrow"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
     </div>
   );
 }
