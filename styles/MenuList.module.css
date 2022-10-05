@@ -4,11 +4,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #0f1521;
 }
 
 .desc {
   font-size: 24px;
-  color: #0f1521;
+  color: #56464a;
   width: 70%;
 }
 

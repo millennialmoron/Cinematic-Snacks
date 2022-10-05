@@ -4,7 +4,9 @@ import styles from "../styles/MenuItemCard.module.css";
 export default function MenuItemCard() {
   return (
     <div className={styles.container}>
-      <Image src="/img/Classic.png" alt="Menu Item" width="500" height="500" />
+      <div className={styles.imgContainer}>
+        <Image src="/img/Snack1.png" alt="Menu Item" width="500" height="500" />
+      </div>
       <h1 className={styles.title}>Classic Cinematic Snacks</h1>
       <span className={styles.price}>$8.99</span>
       <p className={styles.desc}>
