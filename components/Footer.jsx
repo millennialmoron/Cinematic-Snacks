@@ -17,11 +17,19 @@ export default function Footer() {
           <h2 className={styles.motto}>
             We make binge-worthy food so you can keep binging TV with ease.
           </h2>
+          <p className={styles.subtext}>
+            <em>Ask us about our specialty dietary options.</em>
+          </p>
         </div>
         <div className={styles.card}>
           <h1 className={styles.title}>Find out if we deliver near you:</h1>
           <p className={styles.text}>
             NEW YORK, NY || LOS ANGELES, CA || CHICAGO, IL || AUSTIN, TX
+          </p>
+          <p className={styles.text}>
+            We're always expanding! So join our newsletter for updates on new
+            cities we'll be expanding to soon -- LOOKING AT YOU PHOENIX AND
+            SEATTLE!
           </p>
         </div>
         <div className={styles.card}>

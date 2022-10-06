@@ -12,7 +12,7 @@
 }
 
 .item:last-child {
-  flex: 2;
+  flex: 3;
   padding: 50px;
   justify-content: space-between;
 }
@@ -29,6 +29,11 @@
 
 .text {
   color: #b3abb0;
+}
+
+.subtext {
+  color: #b3abb0;
+  font-size: 11px;
 }
 
 .motto {
