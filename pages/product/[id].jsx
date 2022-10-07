@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "../../styles/Product.module.css";
+import SoftDrinks from "./SoftDrinks";
 
 export default function Product() {
   const [selections, setSelections] = useState(0);
@@ -9,7 +10,7 @@ export default function Product() {
     img: "/img/Snack1.png",
     name: "CLASSIC CINEMATIC SNACKS",
     price: [8.99, 10.99],
-    desc: "Settle into movie night with your favorite movie night snacks! Includes a giant tub of movie theater-styled, buttered popcorn (about the equivalent of 6 microwavable bags), 2 large 32oz fountain drinks (we carry most mainstream Coca-Cola products, as well as Dr. Pepper, and A&W Root Beer), and your choice of 2 packages of cinema-style candy packages (we have Red Hots, Reese's Pieces, Milk Duds, Raisinets, M&M's, Skittles, Junior Mints, Twizzlers, Gobstoppers, Sour Patch Kids, and Red Vines). **Please note that we have a vegan butter option. We cannot guarantee any candy is vegan or gluten free, however. Please see manufactures nutritional information for details.",
+    desc: "Settle into movie night with your favorite movie night snacks! Includes a giant tub of movie theater-styled, buttered popcorn (about the equivalent of 6 microwavable bags), 2 large 32oz fountain drinks, and your choice of 2 packages of cinema-style candy packages. **Please note that we have a vegan butter option. We cannot guarantee any candy is vegan or gluten free, however. Please see manufactures nutritional information for details.",
   };
 
   return (
@@ -50,13 +51,17 @@ export default function Product() {
           </div>
         </div>
         <p className={styles.warn}>
-          *Please note, we do our best to keep from cross contamination and
+          *Please note, we do our best to keep from cross-contamination and
           strive to keep our customers safe and healthy. However, we are only
           responsible for items cooked in our kitchen. We cannot and will not
           verify the specific dietary wishes of customers with outside products
           we also sell. Please be mindful of any outside products with your
           order and check manufacturer's labels.
         </p>
+        <SoftDrinks />
+        <div className={styles.add}>
+          <button className={styles.button}>Add to Cart</button>
+        </div>
       </div>
     </div>
   );

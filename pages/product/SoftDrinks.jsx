@@ -1,7 +1,7 @@
-import styles from "../../styles/SoftDrinks.module.css";
+import styles from "../../styles/Extras.module.css";
 
 export default function SoftDrinks() {
-  const drinks = [
+  const drink = [
     "Coca-Cola",
     "Diet Coke",
     "Coke Zero",
@@ -15,6 +15,19 @@ export default function SoftDrinks() {
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your drink choices.</h3>
+      <div className={styles.choices}>
+        {drink.map((drink, i) => (
+          <div className={styles.option} key={i}>
+            <input
+              type="checkbox"
+              id={drink}
+              name={drink}
+              className={styles.checkbox}
+            />
+            <label htmlFor={drink}>{drink}</label>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
