@@ -1,17 +1,65 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "../../styles/Product.module.css";
+import Candy from "./Candy";
 import SoftDrinks from "./SoftDrinks";
+import Cheesecake from "./Cheesecake";
+import Coffee from "./Coffee";
+import Extras from "./Extras";
+import IceCream from "./IceCream";
+import Juice from "./Juice";
+import Pie from "./Pie";
+import Pizza from "./Pizza";
+import Sauce from "./Sauce";
+import Wine from "./Wine";
 
 export default function Product() {
   const [selections, setSelections] = useState(0);
+  const display = [];
   const item = {
     id: 1,
+    extras: ["candy", "drink"],
     img: "/img/Snack1.png",
     name: "CLASSIC CINEMATIC SNACKS",
     price: [8.99, 10.99],
     desc: "Settle into movie night with your favorite movie night snacks! Includes a giant tub of movie theater-styled, buttered popcorn (about the equivalent of 6 microwavable bags), 2 large 32oz fountain drinks, and your choice of 2 packages of cinema-style candy packages. **Please note that we have a vegan butter option. We cannot guarantee any candy is vegan or gluten free, however. Please see manufactures nutritional information for details.",
   };
+
+  for (var i = 0; i <= item.extras.length; i++) {
+    if (item.extras[i] === "candy") {
+      display.push(<Candy />);
+    }
+    if (item.extras[i] === "cheesecake") {
+      display.push(<Cheesecake />);
+    }
+    if (item.extras[i] === "coffee") {
+      display.push(<Coffee />);
+    }
+    if (item.extras[i] === "extras") {
+      display.push(<Extras />);
+    }
+    if (item.extras[i] === "ice cream") {
+      display.push(<IceCream />);
+    }
+    if (item.extras[i] === "juice") {
+      display.push(<Juice />);
+    }
+    if (item.extras[i] === "pie") {
+      display.push(<Pie />);
+    }
+    if (item.extras[i] === "pizza") {
+      display.push(<Pizza />);
+    }
+    if (item.extras[i] === "sauce") {
+      display.push(<Sauce />);
+    }
+    if (item.extras[i] === "wine") {
+      display.push(<Wine />);
+    }
+    if (item.extras[i] === "drink") {
+      display.push(<SoftDrinks />);
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -58,7 +106,9 @@ export default function Product() {
           we also sell. Please be mindful of any outside products with your
           order and check manufacturer's labels.
         </p>
-        <SoftDrinks />
+        {display.map((display, i) => (
+          <div key={i}>{display}</div>
+        ))}
         <div className={styles.add}>
           <button className={styles.button}>Add to Cart</button>
         </div>
