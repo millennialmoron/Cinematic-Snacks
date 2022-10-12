@@ -43,6 +43,7 @@
   height: 50px;
   position: relative;
 }
+
 .number {
   position: absolute;
   top: -20px;
@@ -72,4 +73,32 @@
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
+}
+
+@media screen and (max-width:480px) {
+  .container {
+    height: auto;
+    text-align: center;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .imgContainer {
+    width: 70vw;
+    height: 70vw;
+  }
+
+  .title {
+    margin: 5px;
+  }
+
+  .options {
+    width: 90%;
+    padding: 0px 20px;
+  }
+
+  .button {
+    height: 50px;
+    padding: 10px 20px;
+  }
 }

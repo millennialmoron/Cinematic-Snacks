@@ -21,6 +21,10 @@ export default function Featured() {
     }
   };
 
+  // setInterval(function () {
+  //   handleArrow("r");
+  // }, 3000);
+
   return (
     <div className={styles.container}>
       <div

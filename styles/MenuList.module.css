@@ -21,3 +21,14 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+@media screen and (max-width:480px) {
+  .container {
+    text-align: center;
+  }
+
+  .desc {
+    width: 90%;
+    font-size: 18px;
+  }
+}

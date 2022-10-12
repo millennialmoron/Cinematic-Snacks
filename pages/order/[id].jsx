@@ -16,7 +16,7 @@ export default function Order() {
         <div className={styles.row}>
           <table className={styles.table}>
             <thead>
-              <tr className={styles.tr}>
+              <tr className={styles.trTitle}>
                 <th>Order ID</th>
                 <th>Customer</th>
                 <th>Address</th>
@@ -24,7 +24,7 @@ export default function Order() {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className={styles.tr}>
                 <td>
                   <span className={styles.id}>34856038475</span>
                 </td>
@@ -35,7 +35,7 @@ export default function Order() {
                   <span className={styles.address}>79 Impala Rd, Austin</span>
                 </td>
                 <td>
-                  <span className={styles.total}>$8.99</span>
+                  <span className={styles.total}>$31.46</span>
                 </td>
               </tr>
             </tbody>

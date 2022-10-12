@@ -29,7 +29,7 @@ export default function Footer() {
           <p className={styles.text}>
             We're always expanding! So join our newsletter for updates on new
             cities we'll be expanding to soon -- LOOKING AT YOU PHOENIX AND
-            SEATTLE!
+            SEATTLE! 👀
           </p>
         </div>
         <div className={styles.card}>
