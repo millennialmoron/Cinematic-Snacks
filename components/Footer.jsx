@@ -20,6 +20,14 @@ export default function Footer() {
           <p className={styles.subtext}>
             <em>Ask us about our specialty dietary options.</em>
           </p>
+          <br />
+          <h1 className={styles.title}>Looking for a job?</h1>
+          <p className={styles.text}>
+            We pay great, have awesome benefits, and care about our employees.
+          </p>
+          <p className={styles.text}>
+            EMAIL JOBS@CINEMATICSNACKS.COM FOR MORE INFO!
+          </p>
         </div>
         <div className={styles.card}>
           <h1 className={styles.title}>Find out if we deliver near you:</h1>
@@ -31,22 +39,11 @@ export default function Footer() {
             cities we'll be expanding to soon -- LOOKING AT YOU PHOENIX AND
             SEATTLE! 👀
           </p>
-        </div>
-        <div className={styles.card}>
           <h1 className={styles.title}>Hours of Delivery:</h1>
           <p className={styles.text}>SUNDAY-THURSDAY:</p>
           <p className={styles.text}>7am-11pm</p>
           <p className={styles.text}>FRIDAY & SATURDAY:</p>
           <p className={styles.text}>7am-1am</p>
-        </div>
-        <div className={styles.card}>
-          <h1 className={styles.title}>Looking for a job?</h1>
-          <p className={styles.text}>
-            We pay great, have awesome benefits, and care about our employees.
-          </p>
-          <p className={styles.text}>
-            EMAIL JOBS@CINEMATICSNACKS.COM FOR MORE INFO!
-          </p>
         </div>
       </div>
     </div>

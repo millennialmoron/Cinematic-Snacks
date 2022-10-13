@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "../../styles/Product.module.css";
+import axios from "axios";
 import Candy from "./Candy";
 import SoftDrinks from "./SoftDrinks";
 import Cheesecake from "./Cheesecake";
@@ -13,21 +14,21 @@ import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
 
-export default function Product() {
+export default function Product({ item }, props) {
   const [selections, setSelections] = useState(0);
   const display = [];
-  const item = {
-    id: 1,
-    extras: ["candy", "drink"],
-    img: "/img/Snack1.png",
-    name: "CLASSIC CINEMATIC SNACKS",
-    price: [8.99, 10.99],
-    desc: "Settle into movie night with your favorite movie night snacks! Includes a giant tub of movie theater-styled, buttered popcorn (about the equivalent of 6 microwavable bags), 2 large 32oz fountain drinks, and your choice of 2 packages of cinema-style candy packages. **Please note that we have a vegan butter option. We cannot guarantee any candy is vegan or gluten free, however. Please see manufactures nutritional information for details.",
-  };
+  const [priceAdd, setPriceAdd] = useState(0);
 
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
       display.push(<Candy />);
+      // let chosen = props.chosen;
+      // console.log(chosen);
+
+      // let addOns = 1.5 * (chosen.length - 2);
+      // if (addOns > 0) {
+      //   setPriceAdd(addOns);
+      // }
     }
     if (item.extras[i] === "cheesecake") {
       display.push(<Cheesecake />);
@@ -75,7 +76,10 @@ export default function Product() {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>{item.name}</h1>
-        <span className={styles.price}> ${item.price[selections]} </span>
+        <span className={styles.price}>
+          {" "}
+          ${item.prices[selections] + priceAdd}{" "}
+        </span>
         <p className={styles.desc}> {item.desc} </p>
         <h3 className={styles.choose}>Choose Options:</h3>
         <div className={styles.options}>
@@ -116,3 +120,14 @@ export default function Product() {
     </div>
   );
 }
+
+export const getServerSideProps = async ({ params }) => {
+  const res = await axios.get(
+    `http://localhost:3000/api/products/${params.id}`
+  );
+  return {
+    props: {
+      item: res.data,
+    },
+  };
+};

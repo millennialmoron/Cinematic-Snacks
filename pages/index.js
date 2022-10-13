@@ -1,3 +1,4 @@
+import axios from "axios";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -5,7 +6,7 @@ import Layout from "../components/Layout";
 import Featured from "../components/Featured";
 import MenuList from "../components/MenuList";
 
-export default function Home() {
+export default function Home({ menuList }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -19,7 +20,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Featured />
-      <MenuList />
+      <MenuList menuList={menuList} />
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/products");
+  return {
+    props: {
+      menuList: res.data,
+    },
+  };
+};

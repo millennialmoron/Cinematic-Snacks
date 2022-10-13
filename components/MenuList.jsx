@@ -1,7 +1,7 @@
 import styles from "../styles/MenuList.module.css";
 import MenuItemCard from "./MenuItemCard";
 
-export default function MenuList() {
+export default function MenuList({ menuList }) {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>The Best Movie Night Menu in Town!</h1>
@@ -17,28 +17,9 @@ export default function MenuList() {
         the perfect menu. Check it out below.
       </p>
       <div className={styles.wrapper}>
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
-        <MenuItemCard />
+        {menuList.map((item) => (
+          <MenuItemCard key={item._id} item={item} />
+        ))}
       </div>
     </div>
   );

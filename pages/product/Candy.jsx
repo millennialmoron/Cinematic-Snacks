@@ -15,6 +15,16 @@ export default function Candy() {
     "Red Vines",
   ];
 
+  let chosen = [];
+
+  const handleChange = (e, candy) => {
+    const checked = e.target.checked;
+
+    if(checked){
+      chosen.push(candy);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your candy choices.</h3>
@@ -31,6 +41,8 @@ export default function Candy() {
               id={candy}
               name={candy}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, candy)}
+              // chosen={chosen}
             />
             <label htmlFor={candy}>{candy}</label>
           </div>
