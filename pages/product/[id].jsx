@@ -17,18 +17,39 @@ import Wine from "./Wine";
 export default function Product({ item }, props) {
   const [selections, setSelections] = useState(0);
   const display = [];
-  const [priceAdd, setPriceAdd] = useState(0);
+  const [price, setPrice] = useState(item.prices[0]);
+
+  const changePrice = (number) => {
+    setPrice(price + number);
+  };
+
+  const handleSelection = (index) => {
+    const difference = item.prices[index] - item.prices[selections];
+    setSelections(index);
+    changePrice(difference);
+  };
 
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
-      display.push(<Candy />);
-      // let chosen = props.chosen;
-      // console.log(chosen);
-
-      // let addOns = 1.5 * (chosen.length - 2);
-      // if (addOns > 0) {
-      //   setPriceAdd(addOns);
-      // }
+      display.push(
+        <Candy
+          candyToMain={candyToMain}
+          onChange={() => {
+            getChange();
+          }}
+        />
+      );
+      function candyToMain(chosen) {
+        console.log(chosen);
+        let addOns = 1.5 * (chosen.length - 2);
+        if (addOns > 0) {
+          changePrice(addOns);
+        }
+      }
+      function getChange() {
+        chosen = props.newChoices;
+        candyToMain(chosen);
+      }
     }
     if (item.extras[i] === "cheesecake") {
       display.push(<Cheesecake />);
@@ -76,14 +97,11 @@ export default function Product({ item }, props) {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>{item.name}</h1>
-        <span className={styles.price}>
-          {" "}
-          ${item.prices[selections] + priceAdd}{" "}
-        </span>
+        <span className={styles.price}> ${price} </span>
         <p className={styles.desc}> {item.desc} </p>
         <h3 className={styles.choose}>Choose Options:</h3>
         <div className={styles.options}>
-          <div className={styles.option} onClick={() => setSelections(0)}>
+          <div className={styles.option} onClick={() => handleSelection(0)}>
             <Image
               src="/img/standard.png"
               alt="standard option"
@@ -92,7 +110,7 @@ export default function Product({ item }, props) {
             />
             <span className={styles.number}>Standard Option</span>
           </div>
-          <div className={styles.option} onClick={() => setSelections(1)}>
+          <div className={styles.option} onClick={() => handleSelection(1)}>
             <Image
               src="/img/vegan.png"
               alt="vegan option"

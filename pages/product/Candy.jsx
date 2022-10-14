@@ -1,6 +1,7 @@
+import { useState } from "react";
 import styles from "../../styles/Extras.module.css";
 
-export default function Candy() {
+export default function Candy(props) {
   const candy = [
     "Red Hots",
     "Reese's Pieces",
@@ -19,11 +20,11 @@ export default function Candy() {
 
   const handleChange = (e, candy) => {
     const checked = e.target.checked;
-
-    if(checked){
+    if (checked) {
       chosen.push(candy);
+      console.log(chosen);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -35,14 +36,18 @@ export default function Candy() {
       </p>
       <div className={styles.choices}>
         {candy.map((candy, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={props.candyToMain(chosen)}
+            newChoices={chosen}
+          >
             <input
               type="checkbox"
               id={candy}
               name={candy}
               className={styles.checkbox}
               onChange={(e) => handleChange(e, candy)}
-              // chosen={chosen}
             />
             <label htmlFor={candy}>{candy}</label>
           </div>
