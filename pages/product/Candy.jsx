@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styles from "../../styles/Extras.module.css";
 
-export default function Candy(props) {
+export default function Candy({ candyToMain }) {
+  const [counter, setCounter] = useState(0);
   const candy = [
     "Red Hots",
     "Reese's Pieces",
@@ -16,13 +17,13 @@ export default function Candy(props) {
     "Red Vines",
   ];
 
-  let chosen = [];
-
   const handleChange = (e, candy) => {
     const checked = e.target.checked;
     if (checked) {
-      chosen.push(candy);
-      console.log(chosen);
+      setCounter(counter + 1.5);
+    }
+    if (!checked) {
+      setCounter(counter - 1.5);
     }
   };
 
@@ -39,8 +40,7 @@ export default function Candy(props) {
           <div
             className={styles.option}
             key={i}
-            onClick={props.candyToMain(chosen)}
-            newChoices={chosen}
+            onClick={() => candyToMain(counter)}
           >
             <input
               type="checkbox"

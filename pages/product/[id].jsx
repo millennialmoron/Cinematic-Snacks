@@ -14,13 +14,16 @@ import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
 
-export default function Product({ item }, props) {
+export default function Product({ item }) {
   const [selections, setSelections] = useState(0);
   const display = [];
   const [price, setPrice] = useState(item.prices[0]);
+  const [data, setData] = useState(0);
 
   const changePrice = (number) => {
-    setPrice(price + number);
+    setPrice(
+      Number(parseFloat(Math.round((price + number) * 100) / 100).toFixed(2))
+    );
   };
 
   const handleSelection = (index) => {
@@ -29,26 +32,20 @@ export default function Product({ item }, props) {
     changePrice(difference);
   };
 
+  //price up working, but not down. finish the math for the other components next, then move to uncheck button.
+
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
-      display.push(
-        <Candy
-          candyToMain={candyToMain}
-          onChange={() => {
-            getChange();
-          }}
-        />
-      );
-      function candyToMain(chosen) {
-        console.log(chosen);
-        let addOns = 1.5 * (chosen.length - 2);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Candy candyToMain={candyToMain} />);
+      function candyToMain(candyData) {
+        setData(candyData);
+        console.log(data);
+        let addOns = data;
         if (addOns > 0) {
+          console.log(addOns);
           changePrice(addOns);
         }
-      }
-      function getChange() {
-        chosen = props.newChoices;
-        candyToMain(chosen);
       }
     }
     if (item.extras[i] === "cheesecake") {
