@@ -1,6 +1,6 @@
 import styles from "../../styles/Extras.module.css";
 
-export default function Pie() {
+export default function Pie({ pieToMain }) {
   const pie = [
     "Apple*",
     "Cherry*",
@@ -9,6 +9,16 @@ export default function Pie() {
     "Pecan",
     "Lemon Meringue",
   ];
+
+  const handleChange = (e, pie) => {
+    const checked = e.target.checked;
+    if (checked) {
+      setCounter(counter + 8);
+    }
+    if (!checked) {
+      setCounter(counter - 8);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -22,12 +32,17 @@ export default function Pie() {
       </p>
       <div className={styles.choices}>
         {pie.map((pie, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={() => pieToMain(counter)}
+          >
             <input
               type="checkbox"
               id={pie}
               name={pie}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, pie)}
             />
             <label htmlFor={pie}>{pie}</label>
           </div>

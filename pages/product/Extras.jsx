@@ -1,19 +1,31 @@
 import styles from "../../styles/Extras.module.css";
 
-export default function Extras() {
+export default function Extras({ extrasToMain }) {
   const extras = [
-    "Fries*",
-    "Tacos*",
-    "Fruit Bowl*",
-    "Popcorn*",
-    "Chicken Fingers",
-    "Nachos",
-    "6-Pack of Local Brew Beer",
+    "Fries* (1 serving)",
+    "Tacos* (2 tacos)",
+    "Fruit Bowl* (Large)",
+    "Popcorn* (Large)",
+    "Chicken Fingers (1 serving)",
+    "Nachos (1 serving)",
+    "4-Pack of Local Brew Beer",
   ];
+
+  const handleChange = (e, extras) => {
+    const checked = e.target.checked;
+    if (checked) {
+      setCounter(counter + 6.5);
+    }
+    if (!checked) {
+      setCounter(counter - 6.5);
+    }
+  };
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.choose}>Please select your drink choices.</h3>
+      <h3 className={styles.choose}>
+        Please select any extras you'd like to order.
+      </h3>
       <p className={styles.important}>
         Important Information: You must be 21 or older to place the order and to
         receive the order from the delivery driver if your order includes
@@ -30,12 +42,17 @@ export default function Extras() {
       </p>
       <div className={styles.choices}>
         {extras.map((extras, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={() => extrasToMain(counter)}
+          >
             <input
               type="checkbox"
               id={extras}
               name={extras}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, extras)}
             />
             <label htmlFor={extras}>{extras}</label>
           </div>

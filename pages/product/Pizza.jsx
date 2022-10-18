@@ -1,6 +1,6 @@
 import styles from "../../styles/Extras.module.css";
 
-export default function Pizza() {
+export default function Pizza({ pizzaToMain }) {
   const pizza = [
     "4-Cheese*",
     "Pepperoni",
@@ -10,6 +10,16 @@ export default function Pizza() {
     "Everything",
     "Hawaiian",
   ];
+
+  const handleChange = (e, pizza) => {
+    const checked = e.target.checked;
+    if (checked) {
+      setCounter(counter + 10);
+    }
+    if (!checked) {
+      setCounter(counter - 10);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -23,12 +33,17 @@ export default function Pizza() {
       </p>
       <div className={styles.choices}>
         {pizza.map((pizza, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={() => pizzaToMain(counter)}
+          >
             <input
               type="checkbox"
               id={pizza}
               name={pizza}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, pizza)}
             />
             <label htmlFor={pizza}>{pizza}</label>
           </div>

@@ -1,6 +1,6 @@
 import styles from "../../styles/Extras.module.css";
 
-export default function Sauce() {
+export default function Sauce({ sauceToMain }) {
   const sauce = [
     "Ketchup",
     "Spicy Ketchup",
@@ -11,6 +11,16 @@ export default function Sauce() {
     "Garlic Butter",
     "House Sauce",
   ];
+
+  const handleChange = (e, sauce) => {
+    const checked = e.target.checked;
+    if (checked) {
+      setCounter(counter + 0.5);
+    }
+    if (!checked) {
+      setCounter(counter - 0.5);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -23,12 +33,17 @@ export default function Sauce() {
       </p>
       <div className={styles.choices}>
         {sauce.map((sauce, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={() => sauceToMain(counter)}
+          >
             <input
               type="checkbox"
               id={sauce}
               name={sauce}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, sauce)}
             />
             <label htmlFor={sauce}>{sauce}</label>
           </div>

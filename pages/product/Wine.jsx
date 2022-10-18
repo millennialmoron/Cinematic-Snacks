@@ -1,7 +1,17 @@
 import styles from "../../styles/Extras.module.css";
 
-export default function Wine() {
+export default function Wine({ wineToMain }) {
   const wine = ["House Red", "House White", "Sparkling White Wine"];
+
+  const handleChange = (e, wine) => {
+    const checked = e.target.checked;
+    if (checked) {
+      setCounter(counter + 11);
+    }
+    if (!checked) {
+      setCounter(counter - 11);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -15,12 +25,17 @@ export default function Wine() {
       </p>
       <div className={styles.choices}>
         {wine.map((wine, i) => (
-          <div className={styles.option} key={i}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={() => wineToMain(counter)}
+          >
             <input
               type="checkbox"
               id={wine}
               name={wine}
               className={styles.checkbox}
+              onChange={(e) => handleChange(e, wine)}
             />
             <label htmlFor={wine}>{wine}</label>
           </div>

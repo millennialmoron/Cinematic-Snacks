@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "../../styles/Product.module.css";
 import axios from "axios";
 import Candy from "./Candy";
@@ -36,10 +36,31 @@ export default function Product({ item }) {
 
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
-      let maxPrice = item.maxPriceExtras[i];
+      let count = 0;
       display.push(<Candy candyToMain={candyToMain} />);
       function candyToMain(candyData) {
         setData(candyData);
+        console.log(candyData + " and " + data);
+        if (data > count) {
+          count++;
+          let offset = count - 2;
+          if (offset > 0) {
+            let newPrice = offset * 1.5;
+            changePrice(newPrice);
+          }
+        } else if (data < count) {
+          let offset = count - data;
+          let newPrice = offset * -1.5;
+          changePrice(newPrice);
+          count--;
+        }
+      }
+    }
+    if (item.extras[i] === "cheesecake") {
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Cheesecake cheesecakeToMain={cheesecakeToMain} />);
+      function cheesecakeToMain(cheesecakeData) {
+        setData(cheesecakeData);
         console.log(data);
         let addOns = data;
         if (addOns > 0) {
@@ -48,35 +69,122 @@ export default function Product({ item }) {
         }
       }
     }
-    if (item.extras[i] === "cheesecake") {
-      display.push(<Cheesecake />);
-    }
     if (item.extras[i] === "coffee") {
-      display.push(<Coffee />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Coffee coffeeToMain={coffeeToMain} />);
+      function coffeeToMain(coffeeData) {
+        setData(coffeeData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "extras") {
-      display.push(<Extras />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Extras extrasToMain={extrasToMain} />);
+      function extrasToMain(extrasData) {
+        setData(extrasData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "ice cream") {
-      display.push(<IceCream />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<IceCream iceCreamToMain={iceCreamToMain} />);
+      function iceCreamToMain(iceCreamData) {
+        setData(iceCreamData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "juice") {
-      display.push(<Juice />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Juice juiceToMain={juiceToMain} />);
+      function juiceToMain(juiceData) {
+        setData(juiceData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "pie") {
-      display.push(<Pie />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Pie pieToMain={pieToMain} />);
+      function pieToMain(pieData) {
+        setData(pieData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "pizza") {
-      display.push(<Pizza />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Pizza pizzaToMain={pizzaToMain} />);
+      function pizzaToMain(pizzaData) {
+        setData(pizzaData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "sauce") {
-      display.push(<Sauce />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Sauce sauceToMain={sauceToMain} />);
+      function sauceToMain(sauceData) {
+        setData(sauceData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "wine") {
-      display.push(<Wine />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<Wine wineToMain={wineToMain} />);
+      function wineToMain(wineData) {
+        setData(wineData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
     if (item.extras[i] === "drink") {
-      display.push(<SoftDrinks />);
+      let maxPrice = item.maxPriceExtras[i];
+      display.push(<SoftDrinks drinkToMain={drinkToMain} />);
+      function drinkToMain(drinkData) {
+        setData(drinkData);
+        console.log(data);
+        let addOns = data;
+        if (addOns > 0) {
+          console.log(addOns);
+          changePrice(addOns);
+        }
+      }
     }
   }
 
