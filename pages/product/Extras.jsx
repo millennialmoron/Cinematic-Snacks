@@ -1,6 +1,9 @@
+import { useRef, useState } from "react";
 import styles from "../../styles/Extras.module.css";
 
 export default function Extras({ extrasToMain }) {
+  const [price, setPrice] = useState(0);
+  const counter = useRef(0);
   const extras = [
     "Fries* (1 serving)",
     "Tacos* (2 tacos)",
@@ -14,18 +17,28 @@ export default function Extras({ extrasToMain }) {
   const handleChange = (e, extras) => {
     const checked = e.target.checked;
     if (checked) {
-      setCounter(counter + 6.5);
-    }
-    if (!checked) {
-      setCounter(counter - 6.5);
+      counter.current++;
+      setPrice(price + 6.5);
+    } else {
+      setPrice(price - 6.5);
+      counter.current--;
     }
   };
+
+  let display =
+    "Selections will be charged at $6.50 per choice. Current additional charges: $";
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>
         Please select any extras you'd like to order.
       </h3>
+      {counter.current > 0 ? (
+        <div className={styles.over}>
+          {display}
+          {price}
+        </div>
+      ) : null}
       <p className={styles.important}>
         Important Information: You must be 21 or older to place the order and to
         receive the order from the delivery driver if your order includes

@@ -1,21 +1,41 @@
+import { useRef, useState } from "react";
 import styles from "../../styles/Extras.module.css";
 
 export default function Wine({ wineToMain }) {
+  const [price, setPrice] = useState(0);
+  const counter = useRef(0);
   const wine = ["House Red", "House White", "Sparkling White Wine"];
 
   const handleChange = (e, wine) => {
     const checked = e.target.checked;
     if (checked) {
-      setCounter(counter + 11);
-    }
-    if (!checked) {
-      setCounter(counter - 11);
+      counter.current++;
+      let offset = counter.current - 1;
+      if (offset > 0) {
+        let newPrice = offset * 11;
+        setPrice(newPrice);
+      }
+    } else {
+      let offset = counter.current - 1;
+      if (offset > 0) {
+        setPrice(price - 11);
+      }
+      counter.current--;
     }
   };
+
+  let display =
+    "You are allowed one wine selection with this meal. Additional selections will be charged at $11 per choice. Current additional charges: $";
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your wine choice.</h3>
+      {counter.current > 1 ? (
+        <div className={styles.over}>
+          {display}
+          {price}
+        </div>
+      ) : null}
       <p className={styles.important}>
         Important Information: You must be 21 or older to place the order and to
         receive the order from the delivery driver if the order contains

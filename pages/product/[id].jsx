@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styles from "../../styles/Product.module.css";
 import axios from "axios";
 import Candy from "./Candy";
@@ -32,159 +32,141 @@ export default function Product({ item }) {
     changePrice(difference);
   };
 
-  //price up working, but not down. finish the math for the other components next, then move to uncheck button.
-
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
-      let count = 0;
-      display.push(<Candy candyToMain={candyToMain} />);
-      function candyToMain(candyData) {
-        setData(candyData);
-        console.log(candyData + " and " + data);
-        if (data > count) {
-          count++;
-          let offset = count - 2;
-          if (offset > 0) {
-            let newPrice = offset * 1.5;
-            changePrice(newPrice);
-          }
-        } else if (data < count) {
-          let offset = count - data;
-          let newPrice = offset * -1.5;
-          changePrice(newPrice);
-          count--;
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Candy candyToMain={candyToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function candyToMain(candyData) {}
     }
     if (item.extras[i] === "cheesecake") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Cheesecake cheesecakeToMain={cheesecakeToMain} />);
-      function cheesecakeToMain(cheesecakeData) {
-        setData(cheesecakeData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Cheesecake
+            cheesecakeToMain={cheesecakeToMain}
+            sendMaxChoice={data}
+          />
+        </div>
+      );
+      function cheesecakeToMain(cheesecakeData) {}
     }
     if (item.extras[i] === "coffee") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Coffee coffeeToMain={coffeeToMain} />);
-      function coffeeToMain(coffeeData) {
-        setData(coffeeData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Coffee coffeeToMain={coffeeToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function coffeeToMain(coffeeData) {}
     }
     if (item.extras[i] === "extras") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Extras extrasToMain={extrasToMain} />);
-      function extrasToMain(extrasData) {
-        setData(extrasData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Extras extrasToMain={extrasToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function extrasToMain(extrasData) {}
     }
     if (item.extras[i] === "ice cream") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<IceCream iceCreamToMain={iceCreamToMain} />);
-      function iceCreamToMain(iceCreamData) {
-        setData(iceCreamData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <IceCream iceCreamToMain={iceCreamToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function iceCreamToMain(iceCreamData) {}
     }
     if (item.extras[i] === "juice") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Juice juiceToMain={juiceToMain} />);
-      function juiceToMain(juiceData) {
-        setData(juiceData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Juice juiceToMain={juiceToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function juiceToMain(juiceData) {}
     }
     if (item.extras[i] === "pie") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Pie pieToMain={pieToMain} />);
-      function pieToMain(pieData) {
-        setData(pieData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Pie pieToMain={pieToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function pieToMain(pieData) {}
     }
     if (item.extras[i] === "pizza") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Pizza pizzaToMain={pizzaToMain} />);
-      function pizzaToMain(pizzaData) {
-        setData(pizzaData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Pizza pizzaToMain={pizzaToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function pizzaToMain(pizzaData) {}
     }
     if (item.extras[i] === "sauce") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Sauce sauceToMain={sauceToMain} />);
-      function sauceToMain(sauceData) {
-        setData(sauceData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Sauce sauceToMain={sauceToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function sauceToMain(sauceData) {}
     }
     if (item.extras[i] === "wine") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<Wine wineToMain={wineToMain} />);
-      function wineToMain(wineData) {
-        setData(wineData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <Wine wineToMain={wineToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function wineToMain(wineData) {}
     }
     if (item.extras[i] === "drink") {
-      let maxPrice = item.maxPriceExtras[i];
-      display.push(<SoftDrinks drinkToMain={drinkToMain} />);
-      function drinkToMain(drinkData) {
-        setData(drinkData);
-        console.log(data);
-        let addOns = data;
-        if (addOns > 0) {
-          console.log(addOns);
-          changePrice(addOns);
-        }
-      }
+      let maxChoice = item.maxPriceExtras[i];
+      const sendMaxChoice = () => {
+        setData(maxChoice);
+      };
+      display.push(
+        <div onClick={() => sendMaxChoice()}>
+          <SoftDrinks drinkToMain={drinkToMain} sendMaxChoice={data} />
+        </div>
+      );
+      function drinkToMain(drinkData) {}
     }
   }
 

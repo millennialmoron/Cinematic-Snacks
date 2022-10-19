@@ -1,8 +1,9 @@
 import styles from "../../styles/Extras.module.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Cheesecake({ cheesecakeToMain }) {
-  const [counter, setCounter] = useState(0);
+  const [price, setPrice] = useState(0);
+  const counter = useRef(0);
   const cheesecake = [
     "Original*",
     "Chocolate*",
@@ -16,16 +17,33 @@ export default function Cheesecake({ cheesecakeToMain }) {
   const handleChange = (e, cheesecake) => {
     const checked = e.target.checked;
     if (checked) {
-      setCounter(counter + 13);
-    }
-    if (!checked) {
-      setCounter(counter - 13);
+      counter.current++;
+      let offset = counter.current - 1;
+      if (offset > 0) {
+        let newPrice = offset * 13;
+        setPrice(newPrice);
+      }
+    } else {
+      let offset = counter.current - 1;
+      if (offset > 0) {
+        setPrice(price - 13);
+      }
+      counter.current--;
     }
   };
+
+  let display =
+    "You are allowed one cheesecake selection with this meal. Additional selections will be charged at $13 per choice. Current additional charges: $";
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your cheesecake.</h3>
+      {counter.current > 1 ? (
+        <div className={styles.over}>
+          {display}
+          {price}
+        </div>
+      ) : null}
       <p className={styles.important}>
         Important Information: All crusts are available in a gluten-free option.
         The starred cheesecakes are available in a vegan-friendly option. Call
