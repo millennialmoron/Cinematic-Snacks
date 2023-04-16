@@ -32,6 +32,8 @@ export default function Product({ item }) {
     changePrice(difference);
   };
 
+  //with maxes added in, consider going back and using to make components more modular and less hardcode?
+  //Due to complications with State delaying count back, consider way of changing over to useRef?
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
       let maxChoice = item.maxPriceExtras[i];
@@ -122,6 +124,7 @@ export default function Product({ item }) {
     }
     if (item.extras[i] === "pizza") {
       let maxChoice = item.maxPriceExtras[i];
+      console.log(maxChoice);
       const sendMaxChoice = () => {
         setData(maxChoice);
       };
