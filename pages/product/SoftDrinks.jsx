@@ -1,9 +1,15 @@
 import { useRef, useState } from "react";
 import styles from "../../styles/Extras.module.css";
 
-export default function SoftDrinks({ drinkToMain }) {
+export default function SoftDrinks(props) {
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
+  let data = [];
+  let transferInfo = {
+    counter: counter.current,
+    options: [],
+    amount: 0,
+  };
   const drink = [
     "Coca-Cola",
     "Diet Coke",
@@ -17,19 +23,29 @@ export default function SoftDrinks({ drinkToMain }) {
 
   const handleChange = (e, drink) => {
     const checked = e.target.checked;
+    let newData = [];
     if (checked) {
+      newData.push(...data, drink);
+      data = newData;
       counter.current++;
+      transferInfo.counter = counter.current;
+      transferInfo.options = data;
       let offset = counter.current - 1;
       if (offset > 0) {
         let newPrice = offset * 1.5;
         setPrice(newPrice);
+        transferInfo.amount = price;
       }
     } else {
       let offset = counter.current - 1;
+      data.filter((item) => item != drink);
+      transferInfo.options = data;
       if (offset > 0) {
         setPrice(price - 1.5);
+        transferInfo.amount = price;
       }
       counter.current--;
+      transferInfo.counter = counter.current;
     }
   };
 
@@ -50,7 +66,7 @@ export default function SoftDrinks({ drinkToMain }) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => drinkToMain(counter)}
+            onClick={() => props.drinkToMain(transferInfo)}
           >
             <input
               type="checkbox"

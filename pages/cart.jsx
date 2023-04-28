@@ -1,7 +1,11 @@
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
 
 export default function Cart() {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -15,60 +19,29 @@ export default function Cart() {
               <th>Total</th>
             </tr>
           </thead>
-          <tbody>
-            <tr className={styles.tr}>
-              <td>
-                <div className={styles.imgContainer}>
-                  <Image
-                    src="/img/Snack1.png"
-                    alt=""
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-              </td>
-              <td>
-                <span className={styles.name}>CLASSIC CINEMATIC SNACKS</span>
-              </td>
-              <td>
-                <span className={styles.selections}>
-                  Coke Zero, Dr. Pepper, Milk Duds, Sour Patch Kids
-                </span>
-              </td>
-              <td>
-                <span className={styles.price}>$8.99</span>
-              </td>
-              <td>
-                <span className={styles.total}>$8.99</span>
-              </td>
-            </tr>
-            <tr className={styles.tr}>
-              <td>
-                <div className={styles.imgContainer}>
-                  <Image
-                    src="/img/Snack1.png"
-                    alt=""
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-              </td>
-              <td>
-                <span className={styles.name}>CLASSIC CINEMATIC SNACKS</span>
-              </td>
-              <td>
-                <span className={styles.selections}>
-                  Coke Zero, Dr. Pepper, Milk Duds, Sour Patch Kids
-                </span>
-              </td>
-              <td>
-                <span className={styles.price}>$8.99</span>
-              </td>
-              <td>
-                <span className={styles.total}>$8.99</span>
-              </td>
-            </tr>
-          </tbody>
+          {cart.products.map((product) => {
+            <tbody>
+              <tr className={styles.tr}>
+                <td>
+                  <span className={styles.name}>{product.title}</span>
+                </td>
+                <td>
+                  <span className={styles.selections}>
+                    {product.selectedOptions.map((selection) => {
+                      <span key={selection._id}> {selection.text} </span>;
+                    })}
+                  </span>
+                </td>
+                <td>
+                  <span className={styles.price}>${product.price}</span>
+                </td>
+                <td>
+                  <span className={styles.total}>$TOTAL</span>
+                  {/*Figure out total calculation from additional information/selections later. */}
+                </td>
+              </tr>
+            </tbody>;
+          })}
         </table>
       </div>
       <div className={styles.right}>

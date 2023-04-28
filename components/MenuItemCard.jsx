@@ -3,6 +3,7 @@ import styles from "../styles/MenuItemCard.module.css";
 import Link from "next/link";
 
 export default function MenuItemCard({ item }) {
+  let price = item.price;
   return (
     <div className={styles.container}>
       <div className={styles.imgContainer}>
@@ -11,7 +12,7 @@ export default function MenuItemCard({ item }) {
         </Link>
       </div>
       <h1 className={styles.title}>{item.name}</h1>
-      <span className={styles.price}>${item.prices[0]}</span>
+      <span className={styles.price}>${price[0]}</span>
       <p className={styles.desc}>{item.desc}</p>
     </div>
   );

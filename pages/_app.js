@@ -14,3 +14,5 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
+//Include a "sign up to join our rewards club for special offers and discounts" and include a link to a mailchimp newsletter signup??

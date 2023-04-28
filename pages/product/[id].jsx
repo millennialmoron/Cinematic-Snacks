@@ -13,12 +13,19 @@ import Pie from "./Pie";
 import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../redux/cartSlice";
+
+//currently soft drinks is the only thing working almost fully. price is still off on this page by one click, but correct on the soft drink component page...??
+//it may be too complicated to transfer price. that math may need to be done using the counter since it moves correctly between components...
 
 export default function Product({ item }) {
   const [selections, setSelections] = useState(0);
   const display = [];
-  const [price, setPrice] = useState(item.prices[0]);
+  const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
+  const dispatch = useDispatch();
+  let selectedOptions = [];
 
   const changePrice = (number) => {
     setPrice(
@@ -27,9 +34,13 @@ export default function Product({ item }) {
   };
 
   const handleSelection = (index) => {
-    const difference = item.prices[index] - item.prices[selections];
+    const difference = item.price[index] - item.price[selections];
     setSelections(index);
     changePrice(difference);
+  };
+
+  const handleClick = () => {
+    dispatch(addProduct(...display, selectedOptions, price));
   };
 
   //with maxes added in, consider going back and using to make components more modular and less hardcode?
@@ -133,7 +144,11 @@ export default function Product({ item }) {
           <Pizza pizzaToMain={pizzaToMain} sendMaxChoice={data} />
         </div>
       );
-      function pizzaToMain(pizzaData) {}
+      function pizzaToMain(pizzaData) {
+        console.log(pizzaData);
+      }
+
+      // selectedOptions.push(pizzaData);
     }
     if (item.extras[i] === "sauce") {
       let maxChoice = item.maxPriceExtras[i];
@@ -169,7 +184,16 @@ export default function Product({ item }) {
           <SoftDrinks drinkToMain={drinkToMain} sendMaxChoice={data} />
         </div>
       );
-      function drinkToMain(drinkData) {}
+      function drinkToMain(drinkData) {
+        console.log(drinkData);
+        // if(counter > maxChoice){
+        //   let priceAddOn = (counter-1)*1.5;
+        //   changePrice(priceAddOn);
+        // }
+        // let drinkOptions = options;
+      }
+
+      // selectedOptions.push(drinkData);
     }
   }
 
@@ -222,7 +246,9 @@ export default function Product({ item }) {
           <div key={i}>{display}</div>
         ))}
         <div className={styles.add}>
-          <button className={styles.button}>Add to Cart</button>
+          <button className={styles.button} onClick={handleClick}>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
