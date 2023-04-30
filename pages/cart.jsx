@@ -6,6 +6,16 @@ export default function Cart() {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
+  let currentCart = cart.products.map((product) => ({
+    name: product.name,
+    img: product.img,
+    price: product.price,
+    extras: product.extras,
+    _id: product._id,
+  }));
+
+  console.log(currentCart);
+  //IT'S SOMETHING WITH THE BODY SECTION OF THE TABLE. NOTHING IS SHOWING UP IN THE BODY SECTION...
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -16,18 +26,28 @@ export default function Cart() {
               <th>Name</th>
               <th>Selections</th>
               <th>Price</th>
-              <th>Total</th>
             </tr>
           </thead>
-          {cart.products.map((product) => {
-            <tbody>
-              <tr className={styles.tr}>
+
+          <tbody>
+            {currentCart.map((product) => {
+              <tr className={styles.tr} key={product._id}>
                 <td>
-                  <span className={styles.name}>{product.title}</span>
+                  <div className={styles.imgContainer}>
+                    <Image
+                      src={product.img}
+                      alt={product.name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                </td>
+                <td className={styles.name}>
+                  <div>{product.name}</div>
                 </td>
                 <td>
                   <span className={styles.selections}>
-                    {product.selectedOptions.map((selection) => {
+                    {product.extras.map((selection) => {
                       <span key={selection._id}> {selection.text} </span>;
                     })}
                   </span>
@@ -35,13 +55,9 @@ export default function Cart() {
                 <td>
                   <span className={styles.price}>${product.price}</span>
                 </td>
-                <td>
-                  <span className={styles.total}>$TOTAL</span>
-                  {/*Figure out total calculation from additional information/selections later. */}
-                </td>
-              </tr>
-            </tbody>;
-          })}
+              </tr>;
+            })}
+          </tbody>
         </table>
       </div>
       <div className={styles.right}>

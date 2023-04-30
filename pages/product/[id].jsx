@@ -40,7 +40,9 @@ export default function Product({ item }) {
   };
 
   const handleClick = () => {
-    dispatch(addProduct(...display, selectedOptions, price));
+    let choices = selectedOptions;
+    let finalPrice = price;
+    dispatch(addProduct(item, choices, finalPrice));
   };
 
   //with maxes added in, consider going back and using to make components more modular and less hardcode?
