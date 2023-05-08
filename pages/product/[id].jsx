@@ -15,6 +15,7 @@ import Sauce from "./Sauce";
 import Wine from "./Wine";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../redux/cartSlice";
+import { connect } from "mongoose";
 
 //currently soft drinks is the only thing working almost fully. price is still off on this page by one click, but correct on the soft drink component page...??
 //it may be too complicated to transfer price. that math may need to be done using the counter since it moves correctly between components...
@@ -39,10 +40,28 @@ export default function Product({ item }) {
     changePrice(difference);
   };
 
+  // let finalPrice = price;
+  // let choices = selectedOptions;
+  const createSelector = Reselect.createSelector;
+  const getItemInfo = createSelector([(state) => state.itemInfo], (itemInfo) =>
+    itemInfo.filter((i) => i._id)
+  );
+  const state = {
+    itemInfo: [
+      {
+        finalPrice: price,
+        choices: selectedOptions,
+        _id: item._id,
+      },
+    ],
+  };
+  function mapStateToProps(state, ownProps) {
+    return { cartInfo: getItemInfo(state, ownProps) };
+  }
+
   const handleClick = () => {
-    let choices = selectedOptions;
-    let finalPrice = price;
-    dispatch(addProduct(item, choices, finalPrice));
+    mapStateToProps(item._id);
+    dispatch(addProduct(item, selectedOptions, price));
   };
 
   //with maxes added in, consider going back and using to make components more modular and less hardcode?
