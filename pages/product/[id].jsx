@@ -13,19 +13,19 @@ import Pie from "./Pie";
 import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
-import { useDispatch } from "react-redux";
-import { addProduct } from "../../redux/cartSlice";
-import { connect } from "mongoose";
+import { connect, useDispatch } from "react-redux";
+import { addToCart } from "../../redux/thunks";
 
 //currently soft drinks is the only thing working almost fully. price is still off on this page by one click, but correct on the soft drink component page...??
 //it may be too complicated to transfer price. that math may need to be done using the counter since it moves correctly between components...
 
-export default function Product({ item }) {
+function Product({ item }, props) {
   const [selections, setSelections] = useState(0);
   const display = [];
   const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
   const dispatch = useDispatch();
+  // const { addToCart } = props;
   let selectedOptions = [];
 
   const changePrice = (number) => {
@@ -40,28 +40,11 @@ export default function Product({ item }) {
     changePrice(difference);
   };
 
-  // let finalPrice = price;
-  // let choices = selectedOptions;
-  const createSelector = Reselect.createSelector;
-  const getItemInfo = createSelector([(state) => state.itemInfo], (itemInfo) =>
-    itemInfo.filter((i) => i._id)
-  );
-  const state = {
-    itemInfo: [
-      {
-        finalPrice: price,
-        choices: selectedOptions,
-        _id: item._id,
-      },
-    ],
-  };
-  function mapStateToProps(state, ownProps) {
-    return { cartInfo: getItemInfo(state, ownProps) };
-  }
-
   const handleClick = () => {
-    mapStateToProps(item._id);
-    dispatch(addProduct(item, selectedOptions, price));
+    // mapStateToProps(item._id);
+    console.log("clicked: " + item + " - " + price);
+    addToCart(item, price);
+    // dispatch(addProduct(item, selectedOptions, price));
   };
 
   //with maxes added in, consider going back and using to make components more modular and less hardcode?
@@ -275,6 +258,10 @@ export default function Product({ item }) {
     </div>
   );
 }
+
+const mapDispatchToProps = { addToCart };
+
+export default connect(null, mapDispatchToProps)(Product);
 
 export const getServerSideProps = async ({ params }) => {
   const res = await axios.get(

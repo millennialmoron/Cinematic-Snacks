@@ -1,21 +1,28 @@
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
-import { addProduct } from "../redux/cartSlice";
 
-export default function Cart() {
+export default function Cart(props) {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-  const cartInfo = useSelector((state) => state.cartInfo);
+  const cart = useSelector((state) => state.cart.products);
+  // const cartInfo = useSelector((state) => state.cartInfo);
   // const choices = useSelector((state) => state.choices);
 
-  console.log(cartInfo);
+  console.log(cart);
 
-  let currentCart = cart.products.map((product) => ({
-    name: product.name,
-    img: product.img,
-    _id: product._id,
-  }));
+  let product = {
+    name: "just",
+    img: "/fucking",
+    _id: 7,
+    price: "LOAD",
+  };
+
+  // let currentCart = cart.map((product) => ({
+  //   name: product.name,
+  //   img: product.img,
+  //   _id: product._id,
+  //   price: product.price,
+  // }));
 
   // let extraInfo = cartInfo.itemInfo.map((item) => ({
   //   price: item.finalPrice,
@@ -23,7 +30,6 @@ export default function Cart() {
   //   _id: item._id,
   // }));
 
-  //IT'S SOMETHING WITH THE BODY SECTION OF THE TABLE. NOTHING IS SHOWING UP IN THE BODY SECTION...
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -37,24 +43,24 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            {currentCart.map((product) => {
-              return (
-                <tr className={styles.tr} key={product._id}>
-                  <td className={styles.imgContainer}>
-                    <div className={styles.imgContainer}>
-                      <Image
-                        src={product.img}
-                        alt={product.name}
-                        layout="fill"
-                        objectFit="cover"
-                      />
-                    </div>
-                  </td>
-                  <td className={styles.name}>{product.name}</td>
-                  <td>
-                    <span className={styles.selections}>
-                      Good Lord, just show me the console.
-                      {/* {extraInfo.choices.length === 0 ? (
+            {/* {currentCart.map((product) => {return ( */}
+
+            <tr className={styles.tr} key={product._id}>
+              <td className={styles.imgContainer}>
+                <div className={styles.imgContainer}>
+                  <Image
+                    src={product.img}
+                    alt={product.name}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+              </td>
+              <td className={styles.name}>{product.name}</td>
+              <td>
+                <span className={styles.selections}>
+                  Good Lord, just show me the console.
+                  {/* {extraInfo.choices.length === 0 ? (
                         <span>
                           No Extra Choices Available or Selected on this Item.
                         </span>
@@ -65,16 +71,14 @@ export default function Cart() {
                           );
                         })
                       )} */}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={styles.price}>
-                      ${/* {extraInfo.price} */}
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
+                </span>
+              </td>
+              <td>
+                <span className={styles.price}>${product.price}</span>
+              </td>
+            </tr>
+            {/*
+            ); })} */}
           </tbody>
         </table>
       </div>
