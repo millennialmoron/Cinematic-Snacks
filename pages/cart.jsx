@@ -4,31 +4,22 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.products);
-  // const cartInfo = useSelector((state) => state.cartInfo);
-  // const choices = useSelector((state) => state.choices);
+  const cartItems = useSelector((state) => state.cart.products);
 
-  console.log(cart);
+  console.log(cartItems);
 
-  let product = {
-    name: "just",
-    img: "/fucking",
-    _id: 7,
-    price: "LOAD",
-  };
-
-  // let currentCart = cart.map((product) => ({
-  //   name: product.name,
-  //   img: product.img,
-  //   _id: product._id,
-  //   price: product.price,
-  // }));
-
-  // let extraInfo = cartInfo.itemInfo.map((item) => ({
-  //   price: item.finalPrice,
-  //   choices: item.choices,
-  //   _id: item._id,
-  // }));
+  let currentCart = cartItems.map((product) => ({
+    name: product.name,
+    img: product.img,
+    _id: product._id,
+    price: product.price,
+    extras: product.selections,
+    // .map((item) => ({
+    //   _id: item._id,
+    //   text: item.text,
+    // })),
+  }));
+  //it is trying to grab selections from [id] but it hasn't yet successfully grabbed them. there seems to be an issue wherein the object selected is temporarily stored and visible, but not permanently, even using state...
 
   return (
     <div className={styles.container}>
@@ -43,42 +34,45 @@ export default function Cart(props) {
             </tr>
           </thead>
           <tbody>
-            {/* {currentCart.map((product) => {return ( */}
-
-            <tr className={styles.tr} key={product._id}>
-              <td className={styles.imgContainer}>
-                <div className={styles.imgContainer}>
-                  <Image
-                    src={product.img}
-                    alt={product.name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-              </td>
-              <td className={styles.name}>{product.name}</td>
-              <td>
-                <span className={styles.selections}>
-                  Good Lord, just show me the console.
-                  {/* {extraInfo.choices.length === 0 ? (
-                        <span>
-                          No Extra Choices Available or Selected on this Item.
-                        </span>
-                      ) : (
-                        extraInfo.choices.map((selection) => {
+            {currentCart.map((product) => {
+              return (
+                <tr className={styles.tr} key={product._id}>
+                  <td className={styles.imgContainer}>
+                    <div className={styles.imgContainer}>
+                      <Image
+                        src={product.img}
+                        alt={product.name}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </div>
+                  </td>
+                  <td className={styles.name}>{product.name}</td>
+                  <td>
+                    <span className={styles.selections}>
+                      {/* Good Lord, just show me the console. */}
+                      {currentCart.extras ? (
+                        currentCart.extras.map((selection) => {
                           return (
-                            <span key={selection._id}> {selection.text} </span>
+                            <span key={selection._id}>
+                              {" "}
+                              {console.log("selection")}{" "}
+                            </span>
                           );
                         })
-                      )} */}
-                </span>
-              </td>
-              <td>
-                <span className={styles.price}>${product.price}</span>
-              </td>
-            </tr>
-            {/*
-            ); })} */}
+                      ) : (
+                        <span>
+                          No Extra Choices Available/Selected on this Item.
+                        </span>
+                      )}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={styles.price}>${product.price}</span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

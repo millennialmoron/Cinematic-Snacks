@@ -398,9 +398,9 @@
   "version" "3.1.0"
 
 "caniuse-lite@^1.0.30001406":
-  "integrity" "sha512-t55jfSaWjCdocnFdKQoO+d2ct9C59UZg4dY3OnUlSZ447r8pUtIKdp0hpAzrGFultmTC+Us+KpKi4GZl/LXlFg=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001414.tgz"
-  "version" "1.0.30001414"
+  "integrity" "sha512-83564Z3yWGqXsh2vaH/mhXfEM0wX+NlBCm1jYHOb97TrTWJEmPTccZgeLTPBUUb0PNVo+oomb7wkimZBIERClA=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001487.tgz"
+  "version" "1.0.30001487"
 
 "chalk@^4.0.0":
   "integrity" "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA=="

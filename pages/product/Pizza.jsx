@@ -1,7 +1,14 @@
 import { useRef, useState } from "react";
+import { addToCart } from "../../redux/thunks";
+import { Connect } from "react-redux";
 import styles from "../../styles/Extras.module.css";
 
-export default function Pizza({ pizzaToMain, sendMaxChoice }) {
+export default function Pizza({
+  addedItem,
+  removedItem,
+  pizzaToMain,
+  sendMaxChoice,
+}) {
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const pizza = [
@@ -13,26 +20,45 @@ export default function Pizza({ pizzaToMain, sendMaxChoice }) {
     "Everything",
     "Hawaiian",
   ];
+  const [choices, setChoices] = useState([]);
   const maxChoice = sendMaxChoice;
-  console.log(maxChoice);
 
-  const handleChange = (e, pizza) => {
+  function handleClick(event) {
+    pizzaToMain(counter, choices);
+  }
+
+  const handleChange = (e, pizza, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      _id: Math.round(i * Math.random() * 1000),
+      text: pizza,
+    };
     if (checked) {
       counter.current++;
       let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 10;
         setPrice(newPrice);
+        setChoices(choices, chosen);
+        addedItem(chosen);
+        console.log(choices);
       }
     } else {
       let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 10);
       }
+      let deletedChoice = unclick(i);
+      choices = deletedChoice;
+      removedItem(choices.text);
+      console.log(choices);
       counter.current--;
     }
   };
+
+  function unclick(id) {
+    return choices.filter((id) => choices._id != id);
+  }
 
   let display =
     "You are allowed " +
@@ -63,14 +89,14 @@ export default function Pizza({ pizzaToMain, sendMaxChoice }) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => pizzaToMain(counter)}
+            onClick={(e) => handleClick(e)}
           >
             <input
               type="checkbox"
               id={pizza}
               name={pizza}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, pizza)}
+              onChange={(e) => handleChange(e, pizza, i)}
             />
             <label htmlFor={pizza}>{pizza}</label>
           </div>

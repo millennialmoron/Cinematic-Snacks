@@ -19,14 +19,12 @@ import { addToCart } from "../../redux/thunks";
 //currently soft drinks is the only thing working almost fully. price is still off on this page by one click, but correct on the soft drink component page...??
 //it may be too complicated to transfer price. that math may need to be done using the counter since it moves correctly between components...
 
-function Product({ item }, props) {
+function Product({ item, addToCart }) {
   const [selections, setSelections] = useState(0);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const display = [];
   const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
-  const dispatch = useDispatch();
-  // const { addToCart } = props;
-  let selectedOptions = [];
 
   const changePrice = (number) => {
     setPrice(
@@ -40,15 +38,29 @@ function Product({ item }, props) {
     changePrice(difference);
   };
 
-  const handleClick = () => {
-    // mapStateToProps(item._id);
-    console.log("clicked: " + item + " - " + price);
-    addToCart(item, price);
-    // dispatch(addProduct(item, selectedOptions, price));
-  };
+  function handleAddItem(choice) {
+    console.log(choice.text);
+    let newChoice = selectedOptions.filter((item) => item.text !== choice.text);
+    setSelectedOptions(selectedOptions, newChoice);
+    console.log(newChoice + " and selections state: " + selectedOptions);
+  }
 
-  //with maxes added in, consider going back and using to make components more modular and less hardcode?
-  //Due to complications with State delaying count back, consider way of changing over to useRef?
+  //it seems to be trying but not correctly storing these for transfer...
+
+  function handleRemovedItem(choice) {
+    console.log(choice);
+    let deletedChoice = choice;
+    let updatedSelection = selectedOptions.filter(
+      (item) => item.text !== deletedChoice.text
+    );
+    setSelectedOptions(updatedSelection);
+    console.log(updatedSelection + " and selections state: " + selectedOptions);
+  }
+
+  function handleClick() {
+    addToCart(item, price, selectedOptions);
+  }
+
   for (var i = 0; i <= item.extras.length; i++) {
     if (item.extras[i] === "candy") {
       let maxChoice = item.maxPriceExtras[i];
@@ -139,21 +151,25 @@ function Product({ item }, props) {
     }
     if (item.extras[i] === "pizza") {
       let maxChoice = item.maxPriceExtras[i];
-      console.log(maxChoice);
       const sendMaxChoice = () => {
         setData(maxChoice);
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Pizza pizzaToMain={pizzaToMain} sendMaxChoice={data} />
+          <Pizza
+            pizzaToMain={pizzaToMain}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            sendMaxChoice={data}
+          />
         </div>
       );
-      function pizzaToMain(pizzaData) {
-        console.log(pizzaData);
+      function pizzaToMain(count, choices) {
+        console.log(count);
+        console.log(choices);
       }
-
-      // selectedOptions.push(pizzaData);
     }
+
     if (item.extras[i] === "sauce") {
       let maxChoice = item.maxPriceExtras[i];
       const sendMaxChoice = () => {
@@ -259,10 +275,6 @@ function Product({ item }, props) {
   );
 }
 
-const mapDispatchToProps = { addToCart };
-
-export default connect(null, mapDispatchToProps)(Product);
-
 export const getServerSideProps = async ({ params }) => {
   const res = await axios.get(
     `http://localhost:3000/api/products/${params.id}`
@@ -273,3 +285,5 @@ export const getServerSideProps = async ({ params }) => {
     },
   };
 };
+
+export default connect(null, { addToCart })(Product);
