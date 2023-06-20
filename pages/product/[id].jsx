@@ -25,6 +25,7 @@ function Product({ item, addToCart }) {
   const display = [];
   const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
+  let pizzaOptions = [];
 
   const changePrice = (number) => {
     setPrice(
@@ -58,6 +59,7 @@ function Product({ item, addToCart }) {
   }
 
   function handleClick() {
+    setSelectedOptions([...pizzaOptions]);
     addToCart(item, price, selectedOptions);
   }
 
@@ -165,8 +167,9 @@ function Product({ item, addToCart }) {
         </div>
       );
       function pizzaToMain(count, choices) {
+        pizzaOptions = choices;
         console.log(count);
-        console.log(choices);
+        console.log(pizzaOptions);
       }
     }
 

@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { addToCart } from "../../redux/thunks";
-import { Connect } from "react-redux";
+import { useDispatch, Connect } from "react-redux";
+import { updateChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
+
+//everything is WORKING!! however, the version being passed is still one version behind. will figure out a way to fix this next -- AI has suggestion.
 
 export default function Pizza({
   addedItem,
@@ -9,6 +12,7 @@ export default function Pizza({
   pizzaToMain,
   sendMaxChoice,
 }) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const pizza = [
@@ -39,9 +43,9 @@ export default function Pizza({
       if (offset > 0) {
         let newPrice = offset * 10;
         setPrice(newPrice);
-        setChoices(choices, chosen);
+        setChoices([...choices, chosen]);
         addedItem(chosen);
-        console.log(choices);
+        dispatch(updateChoices([...choices, chosen]));
       }
     } else {
       let offset = counter.current - maxChoice;
@@ -51,13 +55,13 @@ export default function Pizza({
       let deletedChoice = unclick(i);
       choices = deletedChoice;
       removedItem(choices.text);
-      console.log(choices);
       counter.current--;
+      dispatch(updateChoices(choices));
     }
   };
 
   function unclick(id) {
-    return choices.filter((id) => choices._id != id);
+    return choices.filter((choice) => choice._id !== id);
   }
 
   let display =
@@ -71,9 +75,7 @@ export default function Pizza({
       {counter.current > maxChoice ? (
         <div className={styles.over}>
           <span>
-            You are allowed {maxChoice} pizza selections with this meal.
-            Additional selections will be charged at $10 per choice. Current
-            additional charges: ${price}
+            {display} {price}
           </span>
         </div>
       ) : null}

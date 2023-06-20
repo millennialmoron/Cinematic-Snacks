@@ -3,22 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
-  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
+  const cartPrice = useSelector((state) => state.cart.price);
+  const cartSelections = useSelector((state) => state.cart.choices);
 
   console.log(cartItems);
+  console.log(cartPrice);
+  console.log(cartSelections);
 
   let currentCart = cartItems.map((product) => ({
     name: product.name,
     img: product.img,
     _id: product._id,
     price: product.price,
-    extras: product.selections,
-    // .map((item) => ({
-    //   _id: item._id,
-    //   text: item.text,
-    // })),
   }));
+
+  let currentSelections = cartSelections.map((choice) => ({
+    text: choice.text,
+    _id: choice._id,
+  }));
+
   //it is trying to grab selections from [id] but it hasn't yet successfully grabbed them. there seems to be an issue wherein the object selected is temporarily stored and visible, but not permanently, even using state...
 
   return (
@@ -49,23 +53,17 @@ export default function Cart(props) {
                   </td>
                   <td className={styles.name}>{product.name}</td>
                   <td>
-                    <span className={styles.selections}>
-                      {/* Good Lord, just show me the console. */}
-                      {currentCart.extras ? (
-                        currentCart.extras.map((selection) => {
-                          return (
-                            <span key={selection._id}>
-                              {" "}
-                              {console.log("selection")}{" "}
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>
-                          No Extra Choices Available/Selected on this Item.
-                        </span>
-                      )}
-                    </span>
+                    {currentSelections.length != 0 ? (
+                      <ul>
+                        {currentSelections.map((choice) => {
+                          return <li key={choice._id}>{choice.text}</li>;
+                        })}
+                      </ul>
+                    ) : (
+                      <span className={styles.selections}>
+                        No Extra Choices Available/Selected on this Item.
+                      </span>
+                    )}
                   </td>
                   <td>
                     <span className={styles.price}>${product.price}</span>
