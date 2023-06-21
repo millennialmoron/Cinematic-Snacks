@@ -4,12 +4,7 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
-  const cartPrice = useSelector((state) => state.cart.price);
   const cartSelections = useSelector((state) => state.cart.choices);
-
-  console.log(cartItems);
-  console.log(cartPrice);
-  console.log(cartSelections);
 
   let currentCart = cartItems.map((product) => ({
     name: product.name,
@@ -23,7 +18,7 @@ export default function Cart(props) {
     _id: choice._id,
   }));
 
-  //it is trying to grab selections from [id] but it hasn't yet successfully grabbed them. there seems to be an issue wherein the object selected is temporarily stored and visible, but not permanently, even using state...
+  console.log(currentSelections);
 
   return (
     <div className={styles.container}>
@@ -54,11 +49,11 @@ export default function Cart(props) {
                   <td className={styles.name}>{product.name}</td>
                   <td>
                     {currentSelections.length != 0 ? (
-                      <ul>
+                      <div>
                         {currentSelections.map((choice) => {
-                          return <li key={choice._id}>{choice.text}</li>;
+                          return <span key={choice._id}>{choice.text}, </span>;
                         })}
-                      </ul>
+                      </div>
                     ) : (
                       <span className={styles.selections}>
                         No Extra Choices Available/Selected on this Item.

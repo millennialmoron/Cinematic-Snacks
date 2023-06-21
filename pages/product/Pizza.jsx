@@ -1,10 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addToCart } from "../../redux/thunks";
 import { useDispatch, Connect } from "react-redux";
 import { updateChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
-
-//everything is WORKING!! however, the version being passed is still one version behind. will figure out a way to fix this next -- AI has suggestion.
 
 export default function Pizza({
   addedItem,
@@ -37,37 +35,41 @@ export default function Pizza({
       _id: Math.round(i * Math.random() * 1000),
       text: pizza,
     };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
+
       let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 10;
         setPrice(newPrice);
-        setChoices([...choices, chosen]);
-        addedItem(chosen);
-        dispatch(updateChoices([...choices, chosen]));
       }
+
+      addedItem(chosen);
     } else {
+      const deletedChoice = unclick(chosen._id);
+      setChoices(deletedChoice);
+      counter.current--;
+
       let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 10);
       }
-      let deletedChoice = unclick(i);
-      choices = deletedChoice;
-      removedItem(choices.text);
-      counter.current--;
-      dispatch(updateChoices(choices));
+
+      removedItem(chosen.text);
     }
+    dispatch(updateChoices(choices));
   };
 
   function unclick(id) {
     return choices.filter((choice) => choice._id !== id);
   }
 
-  let display =
-    "You are allowed " +
-    { maxChoice } +
-    " pizza selections with this meal. Additional selections will be charged at $10 per choice. Current additional charges: $";
+  useEffect(() => {
+    dispatch(updateChoices(choices));
+  }, [choices, dispatch]);
 
   return (
     <div className={styles.container}>
@@ -75,7 +77,9 @@ export default function Pizza({
       {counter.current > maxChoice ? (
         <div className={styles.over}>
           <span>
-            {display} {price}
+            You are allowed {maxChoice} pizza selections with this meal.
+            Additional selections will be charged at $10 per choice. Current
+            additional charges: ${price}.
           </span>
         </div>
       ) : null}

@@ -16,9 +16,6 @@ import Wine from "./Wine";
 import { connect, useDispatch } from "react-redux";
 import { addToCart } from "../../redux/thunks";
 
-//currently soft drinks is the only thing working almost fully. price is still off on this page by one click, but correct on the soft drink component page...??
-//it may be too complicated to transfer price. that math may need to be done using the counter since it moves correctly between components...
-
 function Product({ item, addToCart }) {
   const [selections, setSelections] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -46,8 +43,6 @@ function Product({ item, addToCart }) {
     console.log(newChoice + " and selections state: " + selectedOptions);
   }
 
-  //it seems to be trying but not correctly storing these for transfer...
-
   function handleRemovedItem(choice) {
     console.log(choice);
     let deletedChoice = choice;
@@ -59,8 +54,7 @@ function Product({ item, addToCart }) {
   }
 
   function handleClick() {
-    setSelectedOptions([...pizzaOptions]);
-    addToCart(item, price, selectedOptions);
+    addToCart(item, price);
   }
 
   for (var i = 0; i <= item.extras.length; i++) {
