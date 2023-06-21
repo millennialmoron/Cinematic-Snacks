@@ -4,21 +4,24 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
-  const cartSelections = useSelector((state) => state.cart.choices);
+
+  console.log(cartItems[0]);
+
+  // let product = {
+  //   name: "name",
+  //   img: "/img/Snack2.png",
+  //   _id: 7,
+  //   price: 10045874,
+  //   choices: ["1", "3", "5", "19"],
+  // };
 
   let currentCart = cartItems.map((product) => ({
     name: product.name,
     img: product.img,
     _id: product._id,
     price: product.price,
+    choices: product.choices,
   }));
-
-  let currentSelections = cartSelections.map((choice) => ({
-    text: choice.text,
-    _id: choice._id,
-  }));
-
-  console.log(currentSelections);
 
   return (
     <div className={styles.container}>
@@ -48,10 +51,17 @@ export default function Cart(props) {
                   </td>
                   <td className={styles.name}>{product.name}</td>
                   <td>
-                    {currentSelections.length != 0 ? (
+                    {product.choices.length != 0 ? (
                       <div>
-                        {currentSelections.map((choice) => {
-                          return <span key={choice._id}>{choice.text}, </span>;
+                        {product.choices.map((choice) => {
+                          return (
+                            <span
+                              className={styles.selections}
+                              key={choice._id}
+                            >
+                              {choice.text}☆
+                            </span>
+                          );
                         })}
                       </div>
                     ) : (

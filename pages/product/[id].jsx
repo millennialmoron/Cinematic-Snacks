@@ -14,15 +14,18 @@ import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
 import { connect, useDispatch } from "react-redux";
+import { addProduct, updateItemChoices } from "../../redux/cartSlice";
 import { addToCart } from "../../redux/thunks";
 
-function Product({ item, addToCart }) {
+function Product({ item }) {
+  const dispatch = useDispatch();
   const [selections, setSelections] = useState(0);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const display = [];
   const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
   let pizzaOptions = [];
+  const currentItem = item._id;
 
   const changePrice = (number) => {
     setPrice(
@@ -53,8 +56,19 @@ function Product({ item, addToCart }) {
     console.log(updatedSelection + " and selections state: " + selectedOptions);
   }
 
-  function handleClick() {
-    addToCart(item, price);
+  async function handleClick(item, choices) {
+    const finalPrice = price;
+    const cartItem = {
+      _id: item._id,
+      name: item.name,
+      img: item.img,
+      price: finalPrice,
+      choices: choices,
+    };
+
+    await dispatch(updateItemChoices({ itemId: item._id, choices: choices }));
+    dispatch(addProduct(cartItem));
+    console.log(cartItem);
   }
 
   for (var i = 0; i <= item.extras.length; i++) {
@@ -263,7 +277,10 @@ function Product({ item, addToCart }) {
           <div key={i}>{display}</div>
         ))}
         <div className={styles.add}>
-          <button className={styles.button} onClick={handleClick}>
+          <button
+            className={styles.button}
+            onClick={() => handleClick(item, pizzaOptions)}
+          >
             Add to Cart
           </button>
         </div>

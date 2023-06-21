@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { addToCart } from "../../redux/thunks";
 import { useDispatch, Connect } from "react-redux";
-import { updateChoices } from "../../redux/cartSlice";
+import { updateItemChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
 export default function Pizza({
+  currentItem,
   addedItem,
   removedItem,
   pizzaToMain,
@@ -60,7 +61,8 @@ export default function Pizza({
 
       removedItem(chosen.text);
     }
-    dispatch(updateChoices(choices));
+    dispatch(updateItemChoices({ currentItem, choices }));
+    pizzaToMain(counter, choices);
   };
 
   function unclick(id) {
@@ -68,8 +70,9 @@ export default function Pizza({
   }
 
   useEffect(() => {
-    dispatch(updateChoices(choices));
-  }, [choices, dispatch]);
+    dispatch(updateItemChoices({ currentItem, choices }));
+    console.log(currentItem);
+  }, [currentItem, choices, dispatch]);
 
   return (
     <div className={styles.container}>
