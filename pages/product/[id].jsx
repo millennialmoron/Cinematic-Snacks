@@ -56,19 +56,17 @@ function Product({ item }) {
     console.log(updatedSelection + " and selections state: " + selectedOptions);
   }
 
-  async function handleClick(item, choices) {
+  function handleClick(item) {
     const finalPrice = price;
     const cartItem = {
       _id: item._id,
       name: item.name,
       img: item.img,
       price: finalPrice,
-      choices: choices,
     };
 
-    await dispatch(updateItemChoices({ itemId: item._id, choices: choices }));
     dispatch(addProduct(cartItem));
-    console.log(cartItem);
+    // console.log(cartItem);
   }
 
   for (var i = 0; i <= item.extras.length; i++) {
@@ -170,14 +168,15 @@ function Product({ item }) {
             pizzaToMain={pizzaToMain}
             addedItem={handleAddItem}
             removedItem={handleRemovedItem}
+            currentItem={currentItem}
             sendMaxChoice={data}
           />
         </div>
       );
       function pizzaToMain(count, choices) {
         pizzaOptions = choices;
-        console.log(count);
-        console.log(pizzaOptions);
+        console.log(count); //count is accurate
+        console.log(pizzaOptions); //pizzaOptions is one step behind.
       }
     }
 

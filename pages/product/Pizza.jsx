@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { addToCart } from "../../redux/thunks";
-import { useDispatch, Connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateItemChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
+
+//this now works beautifully with cart. however, deleting an item does fix the warning and disappear here, but is not reflected by the cartSlice.
 
 export default function Pizza({
   currentItem,
@@ -33,7 +35,7 @@ export default function Pizza({
   const handleChange = (e, pizza, i) => {
     const checked = e.target.checked;
     const chosen = {
-      _id: Math.round(i * Math.random() * 1000),
+      pizzaId: Math.round(i * Math.random() * 1000),
       text: pizza,
     };
 
@@ -47,10 +49,11 @@ export default function Pizza({
         let newPrice = offset * 10;
         setPrice(newPrice);
       }
-
-      addedItem(chosen);
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
+      console.log("updated: " + updatedChoices);
     } else {
-      const deletedChoice = unclick(chosen._id);
+      const deletedChoice = unclick(chosen.pizzaId);
       setChoices(deletedChoice);
       counter.current--;
 
@@ -58,21 +61,33 @@ export default function Pizza({
       if (offset > 0) {
         setPrice(price - 10);
       }
-
-      removedItem(chosen.text);
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
+      console.log("deleted: " + deletedChoice);
     }
-    dispatch(updateItemChoices({ currentItem, choices }));
     pizzaToMain(counter, choices);
   };
 
   function unclick(id) {
-    return choices.filter((choice) => choice._id !== id);
+    return choices.filter((choice) => choice.pizzaId !== id);
+  }
+
+  function handleChoicesUpdate(choices) {
+    let choiceText = choices;
+    const textArray = choiceText.map((choice) => {
+      return choice.text;
+    });
+    console.log(textArray);
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    dispatch(updateItemChoices(newChoices));
   }
 
   useEffect(() => {
-    dispatch(updateItemChoices({ currentItem, choices }));
-    console.log(currentItem);
-  }, [currentItem, choices, dispatch]);
+    handleChoicesUpdate(choices);
+  }, [choices]);
 
   return (
     <div className={styles.container}>

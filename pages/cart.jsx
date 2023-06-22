@@ -4,24 +4,16 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
+  const cartChoices = useSelector((state) => state.cart.choices);
 
-  console.log(cartItems[0]);
-
-  // let product = {
-  //   name: "name",
-  //   img: "/img/Snack2.png",
-  //   _id: 7,
-  //   price: 10045874,
-  //   choices: ["1", "3", "5", "19"],
-  // };
-
-  let currentCart = cartItems.map((product) => ({
-    name: product.name,
-    img: product.img,
-    _id: product._id,
-    price: product.price,
-    choices: product.choices,
-  }));
+  const finalCart = cartItems.map((product) => {
+    const choices =
+      cartChoices.find((choice) => choice._id === product._id)?.choices || [];
+    return {
+      ...product,
+      choices,
+    };
+  });
 
   return (
     <div className={styles.container}>
@@ -33,49 +25,45 @@ export default function Cart(props) {
               <th>Name</th>
               <th>Selections</th>
               <th>Price</th>
+              {console.log(finalCart)}
             </tr>
           </thead>
           <tbody>
-            {currentCart.map((product) => {
-              return (
-                <tr className={styles.tr} key={product._id}>
-                  <td className={styles.imgContainer}>
-                    <div className={styles.imgContainer}>
-                      <Image
-                        src={product.img}
-                        alt={product.name}
-                        layout="fill"
-                        objectFit="cover"
-                      />
+            {finalCart.map((item) => (
+              <tr className={styles.tr} key={item._id}>
+                <td className={styles.imgContainer}>
+                  <div className={styles.imgContainer}>
+                    {console.log("item: " + item._id)}
+                    <Image
+                      src={item.img}
+                      alt={item.name}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                </td>
+                <td className={styles.name}>{item.name}</td>
+                <td>
+                  {console.log("choices length: " + item.choices.length)}
+                  {item.choices.length !== 0 ? (
+                    <div>
+                      {item.choices.map((choice) => (
+                        <span className={styles.selections} key={choice}>
+                          {choice}☆{console.log("choice: " + choice)}
+                        </span>
+                      ))}
                     </div>
-                  </td>
-                  <td className={styles.name}>{product.name}</td>
-                  <td>
-                    {product.choices.length != 0 ? (
-                      <div>
-                        {product.choices.map((choice) => {
-                          return (
-                            <span
-                              className={styles.selections}
-                              key={choice._id}
-                            >
-                              {choice.text}☆
-                            </span>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <span className={styles.selections}>
-                        No Extra Choices Available/Selected on this Item.
-                      </span>
-                    )}
-                  </td>
-                  <td>
-                    <span className={styles.price}>${product.price}</span>
-                  </td>
-                </tr>
-              );
-            })}
+                  ) : (
+                    <span className={styles.selections}>
+                      No Extra Choices Available/Selected on this Item.
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <span className={styles.price}>${item.price}</span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
