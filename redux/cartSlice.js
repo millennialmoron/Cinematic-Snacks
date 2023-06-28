@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+//needs to be fixed so that there is an array for choices from each child component and an update action for each one.
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -26,6 +28,7 @@ const cartSlice = createSlice({
       const { itemId } = action.payload;
       state.products = state.products.filter((item) => item._id !== itemId);
     },
+    //will need to update and fix this to be replicated for each individual choice type, so this needs to become pizza
     updateItemChoices: (state, action) => {
       const { _id, choices } = action.payload;
       const itemIndex = state.choices.findIndex((item) => item._id === _id);

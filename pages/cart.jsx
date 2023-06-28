@@ -6,6 +6,8 @@ export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
   const cartChoices = useSelector((state) => state.cart.choices);
 
+  //will need to be fixed and updated so that each child's choice array is caught and merged with products according to id
+
   const finalCart = cartItems.map((product) => {
     const choices =
       cartChoices.find((choice) => choice._id === product._id)?.choices || [];

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { updateItemChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-//this now works beautifully with cart. however, deleting an item does fix the warning and disappear here, but is not reflected by the cartSlice.
+//this now works beautifully with cart. next step will be replicating this process in all choice components and getting them to correctly communicate with cartSlice.
 
 export default function Pizza({
   currentItem,
