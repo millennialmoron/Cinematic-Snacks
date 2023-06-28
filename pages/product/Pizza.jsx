@@ -53,7 +53,7 @@ export default function Pizza({
       addedItem(updatedChoices);
       console.log("updated: " + updatedChoices);
     } else {
-      const deletedChoice = unclick(chosen.pizzaId);
+      const deletedChoice = unclick(chosen.text);
       setChoices(deletedChoice);
       counter.current--;
 
@@ -65,23 +65,24 @@ export default function Pizza({
       removedItem(deletedChoice);
       console.log("deleted: " + deletedChoice);
     }
+    console.log("choices:" + choices);
     pizzaToMain(counter, choices);
   };
 
-  function unclick(id) {
-    return choices.filter((choice) => choice.pizzaId !== id);
+  function unclick(pizza) {
+    return choices.filter((choice) => choice.text !== pizza);
   }
 
-  function handleChoicesUpdate(choices) {
-    let choiceText = choices;
-    const textArray = choiceText.map((choice) => {
-      return choice.text;
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
     });
-    console.log(textArray);
     let newChoices = {
       _id: currentItem,
       choices: textArray,
     };
+    console.log("newChoices: " + newChoices);
     dispatch(updateItemChoices(newChoices));
   }
 
