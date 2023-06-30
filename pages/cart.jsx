@@ -4,15 +4,65 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
-  const cartChoices = useSelector((state) => state.cart.choices);
+  const pizzaChoices = useSelector((state) => state.pizzaChoices.choices);
+  const candyChoices = useSelector((state) => state.candyChoices.choices);
+  const cheesecakeChoices = useSelector(
+    (state) => state.cheesecakeChoices.choices
+  );
+  const coffeeChoices = useSelector((state) => state.coffeeChoices.choices);
+  const drinkChoices = useSelector((state) => state.drinkChoices.choices);
+  const extraChoices = useSelector((state) => state.extraChoices.choices);
+  const iceCreamChoices = useSelector((state) => state.iceCreamChoices.choices);
+  const juiceChoices = useSelector((state) => state.juiceChoices.choices);
+  const pieChoices = useSelector((state) => state.pieChoices.choices);
+  const sauceChoices = useSelector((state) => state.sauceChoices.choices);
+  const wineChoices = useSelector((state) => state.wineChoices.choices);
 
   //will need to be fixed and updated so that each child's choice array is caught and merged with products according to id
 
-  const finalCart = cartItems.map((product) => {
-    const choices =
-      cartChoices.find((choice) => choice._id === product._id)?.choices || [];
+  // const finalCart = cartItems.map((product) => {
+  //   const choices =
+  //     pizzaChoices.find((choice) => choice._id === product._id)?.choices || [];
+  //   return {
+  //     ...product,
+  //     choices,
+  //   };
+  // });
+
+  const finalCart = cartItems.map((item) => {
+    const choices = [];
+    const pizzaChoice = pizzaChoices.find((choice) => choice._id === item._id);
+    const candyChoice = candyChoices.find((choice) => choice._id === item._id);
+    const cheesecakeChoice = cheesecakeChoices.find(
+      (choice) => choice._id === item._id
+    );
+    const coffeeChoice = coffeeChoices.find(
+      (choice) => choice._id === item._id
+    );
+    const drinkChoice = drinkChoices.find((choice) => choice._id === item._id);
+    const extraChoice = extraChoices.find((choice) => choice._id === item._id);
+    const iceCreamChoice = iceCreamChoices.find(
+      (choice) => choice._id === item._id
+    );
+    const juiceChoice = juiceChoices.find((choice) => choice._id === item._id);
+    const pieChoice = pieChoices.find((choice) => choice._id === item._id);
+    const sauceChoice = sauceChoices.find((choice) => choice._id === item._id);
+    const wineChoice = wineChoices.find((choice) => choice._id === item._id);
+
+    if (pizzaChoice) choices.push(...pizzaChoice.choices);
+    if (candyChoice) choices.push(...candyChoice.choices);
+    if (cheesecakeChoice) choices.push(...cheesecakeChoice.choices);
+    if (coffeeChoice) choices.push(...coffeeChoice.choices);
+    if (drinkChoice) choices.push(...drinkChoice.choices);
+    if (extraChoice) choices.push(...extraChoice.choices);
+    if (iceCreamChoice) choices.push(...iceCreamChoice.choices);
+    if (juiceChoice) choices.push(...juiceChoice.choices);
+    if (pieChoice) choices.push(...pieChoice.choices);
+    if (sauceChoice) choices.push(...sauceChoice.choices);
+    if (wineChoice) choices.push(...wineChoice.choices);
+
     return {
-      ...product,
+      ...item,
       choices,
     };
   });
@@ -35,7 +85,6 @@ export default function Cart(props) {
               <tr className={styles.tr} key={item._id}>
                 <td className={styles.imgContainer}>
                   <div className={styles.imgContainer}>
-                    {console.log("item: " + item._id)}
                     <Image
                       src={item.img}
                       alt={item.name}
@@ -46,12 +95,11 @@ export default function Cart(props) {
                 </td>
                 <td className={styles.name}>{item.name}</td>
                 <td>
-                  {console.log("choices length: " + item.choices.length)}
                   {item.choices.length !== 0 ? (
                     <div>
                       {item.choices.map((choice) => (
                         <span className={styles.selections} key={choice}>
-                          {choice}☆{console.log("choice: " + choice)}
+                          {choice} ☆{" "}
                         </span>
                       ))}
                     </div>

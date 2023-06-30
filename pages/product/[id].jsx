@@ -66,7 +66,6 @@ function Product({ item }) {
     };
 
     dispatch(addProduct(cartItem));
-    // console.log(cartItem);
   }
 
   for (var i = 0; i <= item.extras.length; i++) {
@@ -92,6 +91,9 @@ function Product({ item }) {
           <Cheesecake
             cheesecakeToMain={cheesecakeToMain}
             sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
           />
         </div>
       );
@@ -104,7 +106,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Coffee coffeeToMain={coffeeToMain} sendMaxChoice={data} />
+          <Coffee
+            coffeeToMain={coffeeToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function coffeeToMain(coffeeData) {}
@@ -116,10 +124,19 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Extras extrasToMain={extrasToMain} sendMaxChoice={data} />
+          <Extras
+            extrasToMain={extrasToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
-      function extrasToMain(extrasData) {}
+      function extrasToMain(extrasData) {
+        const addExtra = extrasData;
+        changePrice(addExtra);
+      }
     }
     if (item.extras[i] === "ice cream") {
       let maxChoice = item.maxPriceExtras[i];
@@ -128,7 +145,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <IceCream iceCreamToMain={iceCreamToMain} sendMaxChoice={data} />
+          <IceCream
+            iceCreamToMain={iceCreamToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function iceCreamToMain(iceCreamData) {}
@@ -140,7 +163,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Juice juiceToMain={juiceToMain} sendMaxChoice={data} />
+          <Juice
+            juiceToMain={juiceToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function juiceToMain(juiceData) {}
@@ -152,7 +181,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Pie pieToMain={pieToMain} sendMaxChoice={data} />
+          <Pie
+            pieToMain={pieToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function pieToMain(pieData) {}
@@ -173,10 +208,8 @@ function Product({ item }) {
           />
         </div>
       );
-      function pizzaToMain(count, choices) {
-        pizzaOptions = choices;
-        console.log(count); //count is accurate
-        console.log(pizzaOptions); //pizzaOptions is one step behind.
+      function pizzaToMain(newPrice) {
+        let priceDifference = newPrice;
       }
     }
 
@@ -187,7 +220,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Sauce sauceToMain={sauceToMain} sendMaxChoice={data} />
+          <Sauce
+            sauceToMain={sauceToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function sauceToMain(sauceData) {}
@@ -199,7 +238,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Wine wineToMain={wineToMain} sendMaxChoice={data} />
+          <Wine
+            wineToMain={wineToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function wineToMain(wineData) {}
@@ -211,19 +256,18 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <SoftDrinks drinkToMain={drinkToMain} sendMaxChoice={data} />
+          <SoftDrinks
+            drinkToMain={drinkToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function drinkToMain(drinkData) {
         console.log(drinkData);
-        // if(counter > maxChoice){
-        //   let priceAddOn = (counter-1)*1.5;
-        //   changePrice(priceAddOn);
-        // }
-        // let drinkOptions = options;
       }
-
-      // selectedOptions.push(drinkData);
     }
   }
 

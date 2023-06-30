@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { addToCart } from "../../redux/thunks";
 import { useDispatch } from "react-redux";
-import { updateItemChoices } from "../../redux/cartSlice";
+import { updatePizzaChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
-
-//this now works beautifully with cart. next step will be replicating this process in all choice components and getting them to correctly communicate with cartSlice.
 
 export default function Pizza({
   currentItem,
@@ -29,7 +26,8 @@ export default function Pizza({
   const maxChoice = sendMaxChoice;
 
   function handleClick(event) {
-    pizzaToMain(counter, choices);
+    const newPrice = price;
+    pizzaToMain(newPrice);
   }
 
   const handleChange = (e, pizza, i) => {
@@ -51,22 +49,20 @@ export default function Pizza({
       }
       handleChoicesUpdate(updatedChoices);
       addedItem(updatedChoices);
-      console.log("updated: " + updatedChoices);
+      // console.log("updated: " + updatedChoices);
     } else {
       const deletedChoice = unclick(chosen.text);
       setChoices(deletedChoice);
-      counter.current--;
 
       let offset = counter.current - maxChoice;
+      counter.current--;
       if (offset > 0) {
         setPrice(price - 10);
       }
       handleChoicesUpdate(deletedChoice);
       removedItem(deletedChoice);
-      console.log("deleted: " + deletedChoice);
     }
-    console.log("choices:" + choices);
-    pizzaToMain(counter, choices);
+    pizzaToMain(price);
   };
 
   function unclick(pizza) {
@@ -82,8 +78,8 @@ export default function Pizza({
       _id: currentItem,
       choices: textArray,
     };
-    console.log("newChoices: " + newChoices);
-    dispatch(updateItemChoices(newChoices));
+    // console.log("newChoices: " + newChoices);
+    dispatch(updatePizzaChoices(newChoices));
   }
 
   useEffect(() => {

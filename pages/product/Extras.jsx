@@ -1,7 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateExtraChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function Extras({ extrasToMain }) {
+export default function Extras({
+  extrasToMain,
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const extras = [
@@ -13,17 +22,61 @@ export default function Extras({ extrasToMain }) {
     "Nachos (1 serving)",
     "4-Pack of Local Brew Beer",
   ];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, extras) => {
+  function handleClick(event) {
+    let newPrice = price;
+    extrasToMain(newPrice);
+  }
+
+  const handleChange = (e, extras, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      extraId: Math.round(i * Math.random() * 1000),
+      text: extras,
+    };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
       setPrice(price + 6.5);
+
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
     } else {
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
       setPrice(price - 6.5);
       counter.current--;
+
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
     }
+    extrasToMain(price);
   };
+
+  function unclick(extra) {
+    return choices.filter((choice) => choice.text !== extra);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateExtraChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
 
   let display =
     "Selections will be charged at $6.50 per choice. Current additional charges: $";
@@ -33,7 +86,7 @@ export default function Extras({ extrasToMain }) {
       <h3 className={styles.choose}>
         Please select any extras you'd like to order.
       </h3>
-      {counter.current > 0 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
           {display}
           {price}
@@ -55,17 +108,13 @@ export default function Extras({ extrasToMain }) {
       </p>
       <div className={styles.choices}>
         {extras.map((extras, i) => (
-          <div
-            className={styles.option}
-            key={i}
-            onClick={() => extrasToMain(counter)}
-          >
+          <div className={styles.option} key={i} onClick={() => handleClick(e)}>
             <input
               type="checkbox"
               id={extras}
               name={extras}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, extras)}
+              onChange={(e) => handleChange(e, extras, i)}
             />
             <label htmlFor={extras}>{extras}</label>
           </div>

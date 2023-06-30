@@ -1,7 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateCandyChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function Candy({ candyToMain }) {
+export default function Candy({
+  candyToMain,
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const candy = [
@@ -17,35 +26,80 @@ export default function Candy({ candyToMain }) {
     "Sour Patch Kids",
     "Red Vines",
   ];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, candy) => {
+  function handleClick(event) {
+    const newPrice = price;
+    candyToMain(price);
+  }
+
+  const handleChange = (e, candy, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      candyId: Math.round(i * Math.random() * 1000),
+      text: candy,
+    };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
-      let offset = counter.current - 2;
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 1.5;
         setPrice(newPrice);
       }
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
     } else {
-      let offset = counter.current - 2;
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 1.5);
       }
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
+
       counter.current--;
     }
+    candyToMain(price);
   };
 
-  let display =
-    "You are allowed two candy selections with this meal. Additional selections will be charged at $1.50 per choice. Current additional charges: $";
+  function unclick(candy) {
+    return choices.filter((choice) => choice.text !== candy);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateCandyChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your candy choices.</h3>
-      {counter.current > 2 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
-          {display}
-          {price}
+          <span>
+            You are allowed {maxChoice} candy selections with this meal.
+            Additional selections will be charged at $1.50 per choice. Current
+            additional charges: ${price}.
+          </span>
         </div>
       ) : null}
       <p className={styles.important}>
@@ -55,17 +109,13 @@ export default function Candy({ candyToMain }) {
       </p>
       <div className={styles.choices}>
         {candy.map((candy, i) => (
-          <div
-            className={styles.option}
-            key={i}
-            onClick={() => candyToMain(counter.current)}
-          >
+          <div className={styles.option} key={i} onClick={() => handleClick(e)}>
             <input
               type="checkbox"
               id={candy}
               name={candy}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, candy)}
+              onChange={(e) => handleChange(e, candy, i)}
             />
             <label htmlFor={candy}>{candy}</label>
           </div>
