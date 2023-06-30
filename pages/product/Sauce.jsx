@@ -1,7 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateSauceChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function Sauce({ sauceToMain }) {
+export default function Sauce({
+  sauceToMain,
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const sauce = [
@@ -14,35 +23,81 @@ export default function Sauce({ sauceToMain }) {
     "Garlic Butter",
     "House Sauce",
   ];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, sauce) => {
+  function handleClick(event) {
+    const newPrice = price;
+    sauceToMain(newPrice);
+  }
+
+  const handleChange = (e, sauce, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      sauceId: Math.round(i * Math.random() * 1000),
+      text: sauce,
+    };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
-      let offset = counter.current - 1;
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 0.5;
         setPrice(newPrice);
       }
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
     } else {
-      let offset = counter.current - 1;
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 0.5);
       }
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
       counter.current--;
     }
+    sauceToMain(price);
   };
 
-  let display =
-    "You are allowed one sauce selection with this meal. Additional selections will be charged at $0.50 per choice. Current additional charges: $";
+  function unclick(sauce) {
+    return choices.filter((choice) => choice.text !== sauce);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateSauceChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
+
+  let display = "";
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your sauce choice.</h3>
-      {counter.current > 1 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
-          {display}
-          {price}
+          <span>
+            You are allowed {maxChoice} sauce selection(s) with this meal.
+            Additional selections will be charged at $0.50 per choice. Current
+            additional charges: ${price}.
+          </span>
         </div>
       ) : null}
       <p className={styles.important}>
@@ -56,14 +111,14 @@ export default function Sauce({ sauceToMain }) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => sauceToMain(counter)}
+            onClick={(e) => handleClick(e)}
           >
             <input
               type="checkbox"
               id={sauce}
               name={sauce}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, sauce)}
+              onChange={(e) => handleChange(e, sauce, i)}
             />
             <label htmlFor={sauce}>{sauce}</label>
           </div>

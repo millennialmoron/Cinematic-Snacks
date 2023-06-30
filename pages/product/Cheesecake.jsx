@@ -107,7 +107,11 @@ export default function Cheesecake({
       </p>
       <div className={styles.choices}>
         {cheesecake.map((cheesecake, i) => (
-          <div className={styles.option} key={i} onClick={() => handleClick(e)}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={(e) => handleClick(e)}
+          >
             <input
               type="checkbox"
               id={cheesecake}

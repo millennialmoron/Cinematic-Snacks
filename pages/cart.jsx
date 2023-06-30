@@ -4,30 +4,19 @@ import styles from "../styles/Cart.module.css";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
-  const pizzaChoices = useSelector((state) => state.pizzaChoices.choices);
-  const candyChoices = useSelector((state) => state.candyChoices.choices);
+  const pizzaChoices = useSelector((state) => state.cart.pizzaChoices);
+  const candyChoices = useSelector((state) => state.cart.candyChoices);
   const cheesecakeChoices = useSelector(
-    (state) => state.cheesecakeChoices.choices
+    (state) => state.cart.cheesecakeChoices
   );
-  const coffeeChoices = useSelector((state) => state.coffeeChoices.choices);
-  const drinkChoices = useSelector((state) => state.drinkChoices.choices);
-  const extraChoices = useSelector((state) => state.extraChoices.choices);
-  const iceCreamChoices = useSelector((state) => state.iceCreamChoices.choices);
-  const juiceChoices = useSelector((state) => state.juiceChoices.choices);
-  const pieChoices = useSelector((state) => state.pieChoices.choices);
-  const sauceChoices = useSelector((state) => state.sauceChoices.choices);
-  const wineChoices = useSelector((state) => state.wineChoices.choices);
-
-  //will need to be fixed and updated so that each child's choice array is caught and merged with products according to id
-
-  // const finalCart = cartItems.map((product) => {
-  //   const choices =
-  //     pizzaChoices.find((choice) => choice._id === product._id)?.choices || [];
-  //   return {
-  //     ...product,
-  //     choices,
-  //   };
-  // });
+  const coffeeChoices = useSelector((state) => state.cart.coffeeChoices);
+  const drinkChoices = useSelector((state) => state.cart.drinkChoices);
+  const extraChoices = useSelector((state) => state.cart.extraChoices);
+  const iceCreamChoices = useSelector((state) => state.cart.iceCreamChoices);
+  const juiceChoices = useSelector((state) => state.cart.juiceChoices);
+  const pieChoices = useSelector((state) => state.cart.pieChoices);
+  const sauceChoices = useSelector((state) => state.cart.sauceChoices);
+  const wineChoices = useSelector((state) => state.cart.wineChoices);
 
   const finalCart = cartItems.map((item) => {
     const choices = [];

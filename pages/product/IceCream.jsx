@@ -1,7 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateIceCreamChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function IceCream({ iceCreamToMain }) {
+export default function IceCream({
+  iceCreamToMain,
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const iceCream = [
@@ -13,37 +22,81 @@ export default function IceCream({ iceCreamToMain }) {
     "Strawberry*",
     "Butter Pecan",
   ];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, iceCream) => {
+  function handleClick(event) {
+    const newPrice = price;
+    iceCreamToMain(newPrice);
+  }
+
+  const handleChange = (e, iceCream, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      iceCreamId: Math.round(i * Math.random() * 1000),
+      text: iceCream,
+    };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
-      let offset = counter.current - 1;
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 4.5;
         setPrice(newPrice);
       }
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
     } else {
-      let offset = counter.current - 1;
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 4.5);
       }
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
       counter.current--;
     }
+    iceCreamToMain(price);
   };
 
-  let display =
-    "You are allowed one ice cream selection with this meal. Additional selections will be charged at $4.50 per choice. Current additional charges: $";
+  function unclick(iceCream) {
+    return choices.filter((choice) => choice.text !== iceCream);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateIceCreamChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>
         Please select your ice cream choice. (Pint size, serves about 3)
       </h3>
-      {counter.current > 1 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
-          {display}
-          {price}
+          <span>
+            You are allowed {maxChoice} ice cream selection(s) with this meal.
+            Additional selections will be charged at $4.50 per choice. Current
+            additional charges: ${price}.
+          </span>
         </div>
       ) : null}
       <p className={styles.important}>
@@ -58,14 +111,14 @@ export default function IceCream({ iceCreamToMain }) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => iceCreamToMain(counter)}
+            onClick={(e) => handleClick(e)}
           >
             <input
               type="checkbox"
               id={iceCream}
               name={iceCream}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, iceCream)}
+              onChange={(e) => handleChange(e, iceCream, i)}
             />
             <label htmlFor={iceCream}>{iceCream}</label>
           </div>

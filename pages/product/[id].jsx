@@ -14,8 +14,10 @@ import Pizza from "./Pizza";
 import Sauce from "./Sauce";
 import Wine from "./Wine";
 import { connect, useDispatch } from "react-redux";
-import { addProduct, updateItemChoices } from "../../redux/cartSlice";
+import { addProduct } from "../../redux/cartSlice";
 import { addToCart } from "../../redux/thunks";
+
+//officially time to move forward????
 
 function Product({ item }) {
   const dispatch = useDispatch();
@@ -320,10 +322,7 @@ function Product({ item }) {
           <div key={i}>{display}</div>
         ))}
         <div className={styles.add}>
-          <button
-            className={styles.button}
-            onClick={() => handleClick(item, pizzaOptions)}
-          >
+          <button className={styles.button} onClick={() => handleClick(item)}>
             Add to Cart
           </button>
         </div>

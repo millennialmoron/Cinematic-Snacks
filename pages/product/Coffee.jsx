@@ -102,7 +102,11 @@ export default function Coffee({
       </p>
       <div className={styles.choices}>
         {coffee.map((coffee, i) => (
-          <div className={styles.option} key={i} onClick={() => handleClick(e)}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={(e) => handleClick(e)}
+          >
             <input
               type="checkbox"
               id={coffee}

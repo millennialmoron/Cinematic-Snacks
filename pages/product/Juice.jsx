@@ -1,39 +1,92 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateJuiceChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function Juice({ juiceToMain }) {
+export default function Juice({
+  juiceToMain,
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
   const juice = ["Apple", "Orange", "Cranberry", "Grape", "Fruit Punch"];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, juice) => {
+  function handleClick(event) {
+    const newPrice = price;
+    juiceToMain(newPrice);
+  }
+
+  const handleChange = (e, juice, i) => {
     const checked = e.target.checked;
+    const chosen = {
+      juiceId: Math.round(i * Math.random() * 1000),
+      text: juice,
+    };
+
     if (checked) {
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
-      let offset = counter.current - 1;
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 1.5;
         setPrice(newPrice);
       }
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
     } else {
-      let offset = counter.current - 1;
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         setPrice(price - 1.5);
       }
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
       counter.current--;
     }
+    juiceToMain(price);
   };
 
-  let display =
-    "You are allowed one juice selection with this meal. Additional selections will be charged at $1.50 per choice. Current additional charges: $";
+  function unclick(juice) {
+    return choices.filter((choice) => choice.text !== juice);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateJuiceChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your drink choice.</h3>
-      {counter.current > 1 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
-          {display}
-          {price}
+          <span>
+            You are allowed {maxChoice} juice selection(s) with this meal.
+            Additional selections will be charged at $1.50 per choice. Current
+            additional charges: ${price}.
+          </span>
         </div>
       ) : null}
       <p className={styles.important}>
@@ -47,14 +100,14 @@ export default function Juice({ juiceToMain }) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => juiceToMain(counter)}
+            onClick={(e) => handleClick(e)}
           >
             <input
               type="checkbox"
               id={juice}
               name={juice}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, juice)}
+              onChange={(e) => handleChange(e, juice, i)}
             />
             <label htmlFor={juice}>{juice}</label>
           </div>

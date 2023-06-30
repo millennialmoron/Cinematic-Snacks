@@ -1,15 +1,24 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { updateDrinkChoices } from "../../redux/cartSlice";
 import styles from "../../styles/Extras.module.css";
 
-export default function SoftDrinks(props) {
+export default function SoftDrinks({
+  currentItem,
+  addedItem,
+  removedItem,
+  sendMaxChoice,
+  drinkToMain,
+}) {
+  const dispatch = useDispatch();
   const [price, setPrice] = useState(0);
   const counter = useRef(0);
-  let data = [];
-  let transferInfo = {
-    counter: counter.current,
-    options: [],
-    amount: 0,
-  };
+  // let data = [];
+  // let transferInfo = {
+  //   counter: counter.current,
+  //   options: [],
+  //   amount: 0,
+  // };
   const drink = [
     "Coca-Cola",
     "Diet Coke",
@@ -20,45 +29,82 @@ export default function SoftDrinks(props) {
     "Dr. Pepper",
     "A&W Root Beer",
   ];
+  const [choices, setChoices] = useState([]);
+  const maxChoice = sendMaxChoice;
 
-  const handleChange = (e, drink) => {
+  function handleClick(event) {
+    const newPrice = price;
+    drinkToMain(newPrice);
+  }
+
+  const handleChange = (e, drink, i) => {
     const checked = e.target.checked;
-    let newData = [];
+    const chosen = {
+      drinkId: Math.round(i * Math.random() * 1000),
+      text: drink,
+    };
+
     if (checked) {
-      newData.push(...data, drink);
-      data = newData;
+      const updatedChoices = [...choices, chosen];
+      setChoices(updatedChoices);
       counter.current++;
-      transferInfo.counter = counter.current;
-      transferInfo.options = data;
-      let offset = counter.current - 1;
+
+      let offset = counter.current - maxChoice;
       if (offset > 0) {
         let newPrice = offset * 1.5;
         setPrice(newPrice);
-        transferInfo.amount = price;
       }
+      handleChoicesUpdate(updatedChoices);
+      addedItem(updatedChoices);
+      // console.log("updated: " + updatedChoices);
     } else {
-      let offset = counter.current - 1;
-      data.filter((item) => item != drink);
-      transferInfo.options = data;
+      const deletedChoice = unclick(chosen.text);
+      setChoices(deletedChoice);
+
+      let offset = counter.current - maxChoice;
+      counter.current--;
       if (offset > 0) {
         setPrice(price - 1.5);
-        transferInfo.amount = price;
       }
-      counter.current--;
-      transferInfo.counter = counter.current;
+      handleChoicesUpdate(deletedChoice);
+      removedItem(deletedChoice);
     }
+    drinkToMain(price);
   };
 
-  let display =
-    "You are allowed one drink selection with this meal. Additional selections will be charged at $1.5 per choice. Current additional charges: $";
+  function unclick(drink) {
+    return choices.filter((choice) => choice.text !== drink);
+  }
+
+  function handleChoicesUpdate(currentChoices) {
+    let choiceText = currentChoices;
+    const textArray = choiceText.map((item) => {
+      return item.text;
+    });
+    let newChoices = {
+      _id: currentItem,
+      choices: textArray,
+    };
+    // console.log("newChoices: " + newChoices);
+    dispatch(updateDrinkChoices(newChoices));
+  }
+
+  useEffect(() => {
+    handleChoicesUpdate(choices);
+  }, [choices]);
+
+  let display = "";
 
   return (
     <div className={styles.container}>
       <h3 className={styles.choose}>Please select your drink choices.</h3>
-      {counter.current > 1 ? (
+      {counter.current > maxChoice ? (
         <div className={styles.over}>
-          {display}
-          {price}
+          <span>
+            You are allowed {maxChoice} drink selection(s) with this meal.
+            Additional selections will be charged at $1.5 per choice. Current
+            additional charges: ${price}.
+          </span>
         </div>
       ) : null}
       <div className={styles.choices}>
@@ -66,14 +112,14 @@ export default function SoftDrinks(props) {
           <div
             className={styles.option}
             key={i}
-            onClick={() => props.drinkToMain(transferInfo)}
+            onClick={(e) => handleClick(e)}
           >
             <input
               type="checkbox"
               id={drink}
               name={drink}
               className={styles.checkbox}
-              onChange={(e) => handleChange(e, drink)}
+              onChange={(e) => handleChange(e, drink, i)}
             />
             <label htmlFor={drink}>{drink}</label>
           </div>

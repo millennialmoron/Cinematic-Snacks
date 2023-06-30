@@ -108,7 +108,11 @@ export default function Extras({
       </p>
       <div className={styles.choices}>
         {extras.map((extras, i) => (
-          <div className={styles.option} key={i} onClick={() => handleClick(e)}>
+          <div
+            className={styles.option}
+            key={i}
+            onClick={(e) => handleClick(e)}
+          >
             <input
               type="checkbox"
               id={extras}
