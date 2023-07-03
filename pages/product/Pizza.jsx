@@ -35,6 +35,7 @@ export default function Pizza({
     const chosen = {
       pizzaId: Math.round(i * Math.random() * 1000),
       text: pizza,
+      price: price,
     };
 
     if (checked) {
@@ -77,6 +78,7 @@ export default function Pizza({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updatePizzaChoices(newChoices));

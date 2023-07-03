@@ -37,15 +37,16 @@ const cartSlice = createSlice({
       state.products = state.products.filter((item) => item._id !== itemId);
     },
     updatePizzaChoices: (state, action) => {
-      const { _id, choices } = action.payload;
+      const { _id, choices, price } = action.payload;
       const itemIndex = state.pizzaChoices.findIndex(
         (item) => item._id === _id
       );
 
       if (itemIndex !== -1) {
         state.pizzaChoices[itemIndex].choices = choices;
+        state.pizzaChoices[itemIndex].price = price;
       } else {
-        state.pizzaChoices.push({ _id, choices });
+        state.pizzaChoices.push({ _id, choices, price });
       }
 
       console.log("slice: " + choices);

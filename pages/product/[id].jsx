@@ -18,6 +18,7 @@ import { addProduct } from "../../redux/cartSlice";
 import { addToCart } from "../../redux/thunks";
 
 //officially time to move forward????
+//updated prices or stop selections?? -- needs a fix of some kind
 
 function Product({ item }) {
   const dispatch = useDispatch();

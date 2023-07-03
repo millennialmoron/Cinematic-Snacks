@@ -42,6 +42,7 @@ export default function SoftDrinks({
     const chosen = {
       drinkId: Math.round(i * Math.random() * 1000),
       text: drink,
+      price: price,
     };
 
     if (checked) {
@@ -84,6 +85,7 @@ export default function SoftDrinks({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateDrinkChoices(newChoices));

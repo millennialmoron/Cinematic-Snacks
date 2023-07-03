@@ -35,6 +35,7 @@ export default function IceCream({
     const chosen = {
       iceCreamId: Math.round(i * Math.random() * 1000),
       text: iceCream,
+      price: price,
     };
 
     if (checked) {
@@ -76,6 +77,7 @@ export default function IceCream({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateIceCreamChoices(newChoices));

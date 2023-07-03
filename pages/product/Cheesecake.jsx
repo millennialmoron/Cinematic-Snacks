@@ -35,6 +35,7 @@ export default function Cheesecake({
     const chosen = {
       cheesecakeId: Math.round(i * Math.random() * 1000),
       text: cheesecake,
+      price: price,
     };
 
     if (checked) {
@@ -76,6 +77,7 @@ export default function Cheesecake({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateCheesecakeChoices(newChoices));

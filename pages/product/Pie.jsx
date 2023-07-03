@@ -34,6 +34,7 @@ export default function Pie({
     const chosen = {
       pieId: Math.round(i * Math.random() * 1000),
       text: pie,
+      price: price,
     };
 
     if (checked) {
@@ -75,6 +76,7 @@ export default function Pie({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updatePieChoices(newChoices));

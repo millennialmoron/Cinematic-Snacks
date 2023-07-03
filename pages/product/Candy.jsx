@@ -39,6 +39,7 @@ export default function Candy({
     const chosen = {
       candyId: Math.round(i * Math.random() * 1000),
       text: candy,
+      price: price,
     };
 
     if (checked) {
@@ -81,6 +82,7 @@ export default function Candy({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateCandyChoices(newChoices));

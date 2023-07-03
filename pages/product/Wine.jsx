@@ -27,6 +27,7 @@ export default function Wine({
     const chosen = {
       wineId: Math.round(i * Math.random() * 1000),
       text: wine,
+      price: price,
     };
 
     if (checked) {
@@ -68,6 +69,7 @@ export default function Wine({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateWineChoices(newChoices));

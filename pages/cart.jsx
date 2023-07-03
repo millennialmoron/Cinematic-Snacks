@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
+import { useState } from "react";
 
 export default function Cart(props) {
   const cartItems = useSelector((state) => state.cart.products);
@@ -17,6 +18,8 @@ export default function Cart(props) {
   const pieChoices = useSelector((state) => state.cart.pieChoices);
   const sauceChoices = useSelector((state) => state.cart.sauceChoices);
   const wineChoices = useSelector((state) => state.cart.wineChoices);
+
+  let priceAddOns = 0;
 
   const finalCart = cartItems.map((item) => {
     const choices = [];
@@ -50,9 +53,88 @@ export default function Cart(props) {
     if (sauceChoice) choices.push(...sauceChoice.choices);
     if (wineChoice) choices.push(...wineChoice.choices);
 
+    if (priceAddOns !== 0) {
+      priceAddOns = 0;
+    }
+
+    if (pizzaChoice) {
+      if (pizzaChoice.price) {
+        let newPrice = pizzaChoice.price;
+        // console.log(newPrice);
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (candyChoice) {
+      if (candyChoice.price) {
+        let newPrice = candyChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (cheesecakeChoice) {
+      if (cheesecakeChoice.price) {
+        let newPrice = cheesecakeChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (coffeeChoice) {
+      if (coffeeChoice.price) {
+        let newPrice = coffeeChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (drinkChoice) {
+      if (drinkChoice.price) {
+        let newPrice = drinkChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (iceCreamChoice) {
+      if (iceCreamChoice.price) {
+        let newPrice = iceCreamChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (juiceChoice) {
+      if (juiceChoice.price) {
+        let newPrice = juiceChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (pieChoice) {
+      if (pieChoice.price) {
+        let newPrice = pieChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (sauceChoice) {
+      if (sauceChoice.price) {
+        let newPrice = sauceChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+    if (wineChoice) {
+      if (wineChoice.price) {
+        let newPrice = wineChoice.price;
+        priceAddOns += newPrice;
+        console.log(priceAddOns);
+      }
+    }
+
+    console.log(priceAddOns);
+
     return {
       ...item,
       choices,
+      priceAddOns,
     };
   });
 
@@ -99,7 +181,9 @@ export default function Cart(props) {
                   )}
                 </td>
                 <td>
-                  <span className={styles.price}>${item.price}</span>
+                  <span className={styles.price}>
+                    ${(item.price + item.priceAddOns).toFixed(2)}
+                  </span>
                 </td>
               </tr>
             ))}

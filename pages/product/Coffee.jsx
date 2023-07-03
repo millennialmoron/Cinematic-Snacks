@@ -32,6 +32,7 @@ export default function Coffee({
     const chosen = {
       coffeeId: Math.round(i * Math.random() * 1000),
       text: coffee,
+      price: price,
     };
 
     if (checked) {
@@ -72,6 +73,7 @@ export default function Coffee({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateCoffeeChoices(newChoices));

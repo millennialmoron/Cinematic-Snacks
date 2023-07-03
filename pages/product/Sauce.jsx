@@ -36,6 +36,7 @@ export default function Sauce({
     const chosen = {
       sauceId: Math.round(i * Math.random() * 1000),
       text: sauce,
+      price: price,
     };
 
     if (checked) {
@@ -77,6 +78,7 @@ export default function Sauce({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateSauceChoices(newChoices));

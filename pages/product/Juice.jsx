@@ -27,6 +27,7 @@ export default function Juice({
     const chosen = {
       juiceId: Math.round(i * Math.random() * 1000),
       text: juice,
+      price: price,
     };
 
     if (checked) {
@@ -68,6 +69,7 @@ export default function Juice({
     let newChoices = {
       _id: currentItem,
       choices: textArray,
+      price: price,
     };
     // console.log("newChoices: " + newChoices);
     dispatch(updateJuiceChoices(newChoices));
