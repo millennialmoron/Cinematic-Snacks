@@ -62,74 +62,74 @@ export default function Cart(props) {
         let newPrice = pizzaChoice.price;
         // console.log(newPrice);
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (candyChoice) {
       if (candyChoice.price) {
         let newPrice = candyChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (cheesecakeChoice) {
       if (cheesecakeChoice.price) {
         let newPrice = cheesecakeChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (coffeeChoice) {
       if (coffeeChoice.price) {
         let newPrice = coffeeChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (drinkChoice) {
       if (drinkChoice.price) {
         let newPrice = drinkChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (iceCreamChoice) {
       if (iceCreamChoice.price) {
         let newPrice = iceCreamChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (juiceChoice) {
       if (juiceChoice.price) {
         let newPrice = juiceChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (pieChoice) {
       if (pieChoice.price) {
         let newPrice = pieChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (sauceChoice) {
       if (sauceChoice.price) {
         let newPrice = sauceChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
     if (wineChoice) {
       if (wineChoice.price) {
         let newPrice = wineChoice.price;
         priceAddOns += newPrice;
-        console.log(priceAddOns);
+        // console.log(priceAddOns);
       }
     }
 
-    console.log(priceAddOns);
+    // console.log(priceAddOns);
 
     return {
       ...item,
@@ -137,6 +137,27 @@ export default function Cart(props) {
       priceAddOns,
     };
   });
+
+  const itemTotals = finalCart.map((item) => {
+    const itemAmount = item.price;
+    const itemExtra = item.priceAddOns;
+    return itemAmount + itemExtra;
+  });
+
+  function totalCart(itemTotals) {
+    let cartTotal = 0;
+
+    for (let i = 0; i < itemTotals.length; i++) {
+      cartTotal += itemTotals[i];
+    }
+    return cartTotal;
+  }
+
+  const numItems = finalCart.length;
+  const total = totalCart(itemTotals);
+  const tax = total * 0.0825;
+  const delivery = numItems * 3.5;
+  const finalTotal = total + tax + delivery;
 
   return (
     <div className={styles.container}>
@@ -148,7 +169,6 @@ export default function Cart(props) {
               <th>Name</th>
               <th>Selections</th>
               <th>Price</th>
-              {console.log(finalCart)}
             </tr>
           </thead>
           <tbody>
@@ -194,19 +214,22 @@ export default function Cart(props) {
         <div className={styles.wrapper}>
           <h2 className={styles.title}>CART TOTAL</h2>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Subtotal:</b>$24.50
+            <b className={styles.totalTextTitle}>Subtotal:</b>$
+            {total.toFixed(2)}
           </div>
           <div className={styles.totalText}>
             <b className={styles.totalTextTitle}>Discount:</b>$0.00
           </div>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Tax:</b>$1.96
+            <b className={styles.totalTextTitle}>Tax:</b>${tax.toFixed(2)}
           </div>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Delivery:</b>$5.00
+            <b className={styles.totalTextTitle}>Delivery:</b>$
+            {delivery <= 12 ? delivery.toFixed(2) : 12}
           </div>
           <div className={styles.totalText}>
-            <b className={styles.totalTextTitle}>Total:</b>$31.46
+            <b className={styles.totalTextTitle}>Total:</b>$
+            {finalTotal.toFixed(2)}
           </div>
           <button className={styles.button}>CHECKOUT NOW!</button>
         </div>

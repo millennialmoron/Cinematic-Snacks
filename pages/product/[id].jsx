@@ -17,8 +17,7 @@ import { connect, useDispatch } from "react-redux";
 import { addProduct } from "../../redux/cartSlice";
 import { addToCart } from "../../redux/thunks";
 
-//officially time to move forward????
-//updated prices or stop selections?? -- needs a fix of some kind
+//fix mongo for cinsnacks and check the maxChoice matches what it should for others.
 
 function Product({ item }) {
   const dispatch = useDispatch();
@@ -27,7 +26,6 @@ function Product({ item }) {
   const display = [];
   const [price, setPrice] = useState(item.price[0]);
   const [data, setData] = useState(0);
-  let pizzaOptions = [];
   const currentItem = item._id;
 
   const changePrice = (number) => {
@@ -79,7 +77,13 @@ function Product({ item }) {
       };
       display.push(
         <div onClick={() => sendMaxChoice()}>
-          <Candy candyToMain={candyToMain} sendMaxChoice={data} />
+          <Candy
+            candyToMain={candyToMain}
+            sendMaxChoice={data}
+            addedItem={handleAddItem}
+            removedItem={handleRemovedItem}
+            currentItem={currentItem}
+          />
         </div>
       );
       function candyToMain(candyData) {}

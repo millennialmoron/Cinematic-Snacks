@@ -109,17 +109,14 @@ export default function Pizza({
       </p>
       <div className={styles.choices}>
         {pizza.map((pizza, i) => (
-          <div
-            className={styles.option}
-            key={i}
-            onClick={(e) => handleClick(e)}
-          >
+          <div className={styles.option} key={i}>
             <input
               type="checkbox"
               id={pizza}
               name={pizza}
               className={styles.checkbox}
               onChange={(e) => handleChange(e, pizza, i)}
+              onClick={(e) => handleClick(e)}
             />
             <label htmlFor={pizza}>{pizza}</label>
           </div>
