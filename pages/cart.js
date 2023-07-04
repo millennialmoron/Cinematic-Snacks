@@ -1,9 +1,19 @@
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
-import { useState } from "react";
+import { useEffect } from "react";
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  usePayPalScriptReducer,
+} from "@paypal/react-paypal-js";
 
-export default function Cart(props) {
+//got paypal to import and load buttons, there is a non-breaking error: TypeError: Failed to fetch
+//  at __webpack_require__.hmrM (http://localhost:3000/_next/static/chunks/fallback/webpack.js?ts=1688507727987:1174:20...
+//but it loads and seems to work.
+
+export default function Cart() {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
   const pizzaChoices = useSelector((state) => state.cart.pizzaChoices);
   const candyChoices = useSelector((state) => state.cart.candyChoices);
@@ -20,6 +30,9 @@ export default function Cart(props) {
   const wineChoices = useSelector((state) => state.cart.wineChoices);
 
   let priceAddOns = 0;
+  const amount = "2";
+  const currency = "USD";
+  const style = { layout: "vertical" };
 
   const finalCart = cartItems.map((item) => {
     const choices = [];
@@ -159,6 +172,57 @@ export default function Cart(props) {
   const delivery = numItems * 3.5;
   const finalTotal = total + tax + delivery;
 
+  //PayPal Button Wrapper:
+  const ButtonWrapper = ({ currency, showSpinner }) => {
+    // usePayPalScriptReducer can be use only inside children of PayPalScriptProviders
+    // This is the main reason to wrap the PayPalButtons in a new component
+    const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
+
+    useEffect(() => {
+      dispatch({
+        type: "resetOptions",
+        value: {
+          ...options,
+          currency: currency,
+        },
+      });
+    }, [currency, showSpinner]);
+
+    return (
+      <>
+        {showSpinner && isPending && <div className="spinner" />}
+        <PayPalButtons
+          style={style}
+          disabled={false}
+          forceReRender={[amount, currency, style]}
+          fundingSource={undefined}
+          createOrder={(data, actions) => {
+            return actions.order
+              .create({
+                purchase_units: [
+                  {
+                    amount: {
+                      currency_code: currency,
+                      value: amount,
+                    },
+                  },
+                ],
+              })
+              .then((orderId) => {
+                // Your code here after create the order
+                return orderId;
+              });
+          }}
+          onApprove={function (data, actions) {
+            return actions.order.capture().then(function () {
+              // Your code here after capture the order
+            });
+          }}
+        />
+      </>
+    );
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -232,6 +296,16 @@ export default function Cart(props) {
             {finalTotal.toFixed(2)}
           </div>
           <button className={styles.button}>CHECKOUT NOW!</button>
+
+          <PayPalScriptProvider
+            options={{
+              clientId: "test",
+              components: "buttons",
+              currency: "USD",
+            }}
+          >
+            <ButtonWrapper currency={currency} showSpinner={false} />
+          </PayPalScriptProvider>
         </div>
       </div>
     </div>
