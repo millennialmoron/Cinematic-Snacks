@@ -1,18 +1,16 @@
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/Cart.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   PayPalScriptProvider,
   PayPalButtons,
   usePayPalScriptReducer,
 } from "@paypal/react-paypal-js";
 
-//got paypal to import and load buttons, there is a non-breaking error: TypeError: Failed to fetch
-//  at __webpack_require__.hmrM (http://localhost:3000/_next/static/chunks/fallback/webpack.js?ts=1688507727987:1174:20...
-//but it loads and seems to work.
-
 export default function Cart() {
+  const clientId = process.env.CLIENT_ID;
+
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
   const pizzaChoices = useSelector((state) => state.cart.pizzaChoices);
@@ -30,6 +28,8 @@ export default function Cart() {
   const wineChoices = useSelector((state) => state.cart.wineChoices);
 
   let priceAddOns = 0;
+
+  const [open, setOpen] = useState(false);
   const amount = "2";
   const currency = "USD";
   const style = { layout: "vertical" };
@@ -295,17 +295,27 @@ export default function Cart() {
             <b className={styles.totalTextTitle}>Total:</b>$
             {finalTotal.toFixed(2)}
           </div>
-          <button className={styles.button}>CHECKOUT NOW!</button>
 
-          <PayPalScriptProvider
-            options={{
-              clientId: "test",
-              components: "buttons",
-              currency: "USD",
-            }}
-          >
-            <ButtonWrapper currency={currency} showSpinner={false} />
-          </PayPalScriptProvider>
+          {/* CURRENTLY SETTING UP SANDBOX AND TESTING PAYPAL */}
+          {open ? (
+            <div className={styles.paymentMethod}>
+              <PayPalScriptProvider
+                options={{
+                  clientId: clientId,
+                  components: "buttons",
+                  currency: "USD",
+                  "disable-funding": "credit,card",
+                }}
+              >
+                <ButtonWrapper currency={currency} showSpinner={false} />
+              </PayPalScriptProvider>
+              <button className={styles.cashButton}>CASH ON DELIVERY</button>
+            </div>
+          ) : (
+            <button onClick={() => setOpen(true)} className={styles.button}>
+              CHECKOUT NOW!
+            </button>
+          )}
         </div>
       </div>
     </div>
